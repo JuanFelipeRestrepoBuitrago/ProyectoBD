@@ -7,7 +7,7 @@ class Estudiantes(models.Model):
     documento_identidad = models.IntegerField(unique=True, db_comment='N·mero de documento ·nico que distingue a la persona seg·n la registraduria nacional, ademßs funge como usuario institucional.\n\n')
     programa_academico = models.CharField(max_length=100, db_comment='Es el programa academico en el cual estß inscrito el estudiante.\n')
     nombre_completo = models.CharField(max_length=120, db_comment='Nombre del estudiante tal cual aparece en su documento de identidad.\n')
-    contraseña = models.CharField(max_length=30, db_comment='Contraseña con la cual el estudiante puede ingresar a la plataforma de matricula de materias.\n')
+    contraseña = models.CharField(max_length=30, db_comment='Contrase±a con la cual el estudiante puede ingresar a la plataforma de matricula de materias.\n')
 
     class Meta:
         managed = False
@@ -48,7 +48,8 @@ class Materias(models.Model):
 
 
 class Aulas(models.Model):
-    numero_bloque = models.PositiveIntegerField(primary_key=True, db_comment='Identificador del bloque, dentro de su respectiva sede, en el que se dictara la clase, en caso de ya estßr definido.\n')  # The composite primary key (numero_bloque, numero_aula) found, that is not supported. The first column is selected.
+    id_aula = models.AutoField(primary_key=True)
+    numero_bloque = models.PositiveIntegerField(db_comment='Identificador del bloque, dentro de su respectiva sede, en el que se dictara la clase, en caso de ya estßr definido.\n')
     numero_aula = models.PositiveIntegerField(db_comment='N·mero que identifica como ·nica a cada aula dentro de un bloque.\n')
     capacidad = models.IntegerField(db_comment='Aforo mßximo del aula.\n')
     sede = models.CharField(max_length=60, db_comment='Nombre de la sede de la universidad en la cual sse dictara la clase.\n')
@@ -62,7 +63,7 @@ class Aulas(models.Model):
 
 class Administradores(models.Model):
     usuario = models.CharField(primary_key=True, max_length=30)
-    contrasela = models.CharField(max_length=50)
+    contraseña = models.CharField(max_length=50)
 
     class Meta:
         managed = False
@@ -70,8 +71,9 @@ class Administradores(models.Model):
 
 
 class MateriasPrerrequisito(models.Model):
-    id_materia = models.OneToOneField(Materias, models.DO_NOTHING, db_column='id_materia', primary_key=True, db_comment='Id de la materia que sirve como prerrequisito de la actual, la cual, si el estudiante no la ha aprovado no podra matricular la materia identificada por id_materia de la misma tabla.\n')  # The composite primary key (id_materia, id_materia_prerrequisito) found, that is not supported. The first column is selected.
-    id_materia_prerrequisito = models.ForeignKey(Materias, models.DO_NOTHING, db_column='id_materia_prerrequisito', related_name='materiasprerrequisito_id_materia_prerrequisito_set', db_comment='Identificador unico de la materia.\n')
+    id_prerrequisito = models.AutoField(primary_key=True)
+    id_materia = models.ForeignKey(Materias, models.DO_NOTHING, db_column='id_materia')
+    id_materia_prerrequisito = models.ForeignKey(Materias, models.DO_NOTHING, db_column='id_materia_prerrequisito', related_name='materiasprerrequisito_id_materia_prerrequisito_set')
 
     class Meta:
         managed = False
@@ -80,8 +82,9 @@ class MateriasPrerrequisito(models.Model):
 
 
 class MateriasAprobadas(models.Model):
-    codigo_estudiante = models.OneToOneField(Estudiantes, models.DO_NOTHING, db_column='codigo_estudiante', primary_key=True, db_comment='Id distintivo y ·nico que permite diferenciar a cada estudiante de la universidad que curso la y aprovo la materia.\n')  # The composite primary key (codigo_estudiante, id_materia) found, that is not supported. The first column is selected.
-    id_materia = models.ForeignKey(Materias, models.DO_NOTHING, db_column='id_materia', db_comment='Id distintivo de la materia que curso y aprovo el estudiante.\n')
+    id_materia_aprobada = models.AutoField(primary_key=True)
+    codigo_estudiante = models.ForeignKey(Estudiantes, models.DO_NOTHING, db_column='codigo_estudiante')
+    id_materia = models.ForeignKey(Materias, models.DO_NOTHING, db_column='id_materia')
 
     class Meta:
         managed = False
@@ -95,8 +98,7 @@ class Clases(models.Model):
     id_profesor = models.ForeignKey('Profesores', models.DO_NOTHING, db_column='id_profesor', blank=True, null=True, db_comment='Id del profesor asignado a la clase, en caso de este ya estar definido.\n')
     id_materia = models.ForeignKey('Materias', models.DO_NOTHING, db_column='id_materia', db_comment='Identificador unico de la materia de la cual se dicta la clase.\n')
     horario = models.JSONField(db_comment='Es el horario que tendrß asignada la clase en el dÝa o multiples dÝas que se dicte.\n')
-    numero_bloque = models.ForeignKey(Aulas, models.DO_NOTHING, db_column='numero_bloque', blank=True, null=True, db_comment='Identificador del bloque, dentro de su respectiva sede, en el que se dictara la clase, en caso de ya estßr definido.\n')
-    numero_aula = models.ForeignKey(Aulas, models.DO_NOTHING, db_column='numero_aula', to_field='numero_aula', related_name='clases_numero_aula_set', blank=True, null=True, db_comment='El n·mero del aula dentro del bloque que se dictara la clase, en caso de ya estar definido.\n')
+    id_aula = models.ForeignKey(Aulas, models.DO_NOTHING, db_column='id_aula', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -104,7 +106,8 @@ class Clases(models.Model):
 
 
 class Registros(models.Model):
-    codigo_estudiante = models.OneToOneField(Estudiantes, models.DO_NOTHING, db_column='codigo_estudiante', primary_key=True, db_comment='Codigo del estudiante que realiza el registro.\n')  # The composite primary key (codigo_estudiante, id_clase, fecha_registro) found, that is not supported. The first column is selected.
+    id_registro = models.AutoField(primary_key=True)
+    codigo_estudiante = models.ForeignKey(Estudiantes, models.DO_NOTHING, db_column='codigo_estudiante', db_comment='Codigo del estudiante que realiza el registro.\n')
     id_clase = models.ForeignKey(Clases, models.DO_NOTHING, db_column='id_clase', db_comment='Identifica la clase registrada por el estudiante.\n')
     fecha_registro = models.DateField(db_comment='Identifica el la fecha en la cual se llevo a cabo el registro.\n')
     id_factura = models.ForeignKey(Facturas, models.DO_NOTHING, db_column='id_factura', db_comment='Identificador ·nico de la factura asociada a la transacci¾n.\n')

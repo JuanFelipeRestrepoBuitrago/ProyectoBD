@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>Registro</title>
+</head>
+<body>
+
+<div class="container">
+    <h2> Ingrese los siguientes datos</h2>
+    <form method="POST" action="{% url 'registro_estudiante' %}">
+    {% csrf_token %}
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Ingrese nombre completo:</label>
+            <input type="text" class="form-control" id="nombre" placeholder="Nombre" required>
+        </div>
+        <div class="mb-3">
+            <label for="documento" class="form-label">Ingrese documento de identidad:</label>
+            <input type="number" class="form-control" id="documento" placeholder="Documento de identidad" required>
+        </div>
+        <div class="mb-3">
+            <label for="programa_academico" class="form-label">Ingrese su programa academico:</label>
+            <input type="text" class="form-control" id="programa_academico" placeholder="Programa academico" required>
+        </div>
+
+       {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == error %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+        <div class="mb-3">
+            <label for="contraseña" class="form-label">Ingrese su contraseña:</label>
+            <input type="password" class="form-control" id="contraseña" placeholder="Contraseña" required>
+        </div>
+        <div class="mb-3">
+            <label for="contraseña_c" class="form-label">Valide su contraseña:</label>
+            <input type="password" class="form-control" id="contraseña_c" placeholder="Verifica tu contraseña" required>
+        </div>
+
+      <button type="submit" class="btn btn-primary">Registrarse</button>
+
+    </form>
+</div>
+
+</body>
+</html>
+{% endblock %}

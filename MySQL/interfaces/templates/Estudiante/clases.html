@@ -1,0 +1,47 @@
+{% extends 'Layouts/base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1>Clases Registradas</h1>
+        {% for clase in clases %}
+            {% for materia in materias %}
+                {% if materia.id_materia == clase.id_materia_id %}
+                    {% for profesor in profesores %}
+                        {% if profesor.id_profesor == clase.id_profesor_id %}
+                            <form class="row gy-2 gx-3 align-items-center" method="POST">
+                                {% csrf_token %}
+                                <div class="col-auto">
+                                    <label class="visually-hidden" for="autoSizingInput">Clase</label>
+                                    <input type="text" name="clase" class="form-control" id="autoSizingInput" value="{{ materia.nombre_materia }}-{{clase.id_clase}}" readonly>
+                                </div>
+                                <div class="col-auto">
+                                    <label class="visually-hidden" for="autoSizingInput">Horario</label>
+                                    <input type="text" name="horario" class="form-control" id="autoSizingInput" value="{{clase.horario}}" readonly>
+                                </div>
+                                <div class="col-auto">
+                                    <label class="visually-hidden" for="autoSizingInput">Profesor</label>
+                                    <input type="text" name="profesor"  class="form-control" id="autoSizingInput" value="{{profesor.nombre_completo}}" readonly>
+                                </div>
+                                <div class="col-auto">
+                                    <label class="visually-hidden" for="autoSizingInput">Aula</label>
+                                    {% if clase.numero_bloque is None or clase.numero_aula is None %}
+                                        <input type="text" name="aula" class="form-control" id="autoSizingInput" value="Aula no Asignada" readonly>
+                                    {% else %}
+                                        <input type="text" name="aula" class="form-control" id="autoSizingInput" value="{{clase.numero_bloque}}-{{ clase.numero_aula }}" readonly>
+                                    {% endif %}
+                                </div>
+                                <div class="col-auto">
+                                    <label class="visually-hidden" for="autoSizingInput">Tipo de Clase</label>
+                                    <input type="text" name="tipo_clase" class="form-control" id="autoSizingInput" value="{{clase.tipo_clase}}" readonly>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn btn-danger">Eliminar</button>
+                                </div>
+                            </form>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %} 
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'Layouts/base_estudiante.html' %}
 
 {% block content %}
-    <div class="row">
+        <div class="row">
         <div class="col">
             <h2>Clases Registradas</h2>
             <div class="table-responsive">
@@ -32,7 +32,7 @@
                                 <form method="POST">
                                     {% csrf_token %}
                                     <input type="hidden" name="id_clase" value="{{clase.id_clase}}">
-                                    <button type="submit" class="btn btn btn-danger">Eliminar</button>
+                                    <button type="submit" class="btn btn btn-success">Registrar</button>
                                 </form>
                             </td>
                         </tr>

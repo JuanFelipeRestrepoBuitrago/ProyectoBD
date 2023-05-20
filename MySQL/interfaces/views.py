@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Estudiantes, Clases, Materias, Profesores
 from django.http import HttpResponse
-from .forms import EstudianteForm
 from datetime import datetime
 from django.db import transaction
 from django.contrib import messages
@@ -62,18 +61,40 @@ def home_estudiante(request, documento):
 
 
 def cambiar_constraseña(request):
-    pass
+    if request.method == 'GET':
+        return render(request, 'Principales/contraseña.html', {
+            'title': 'Cambiar Contraseña',
+        })
+    else:
+        documento = request.POST['documento']
+        contraseña = request.POST['contraseña']
+        contraseña_c = request.POST['contraseña_confirmación']
+
+        try:
+            estudiante = Estudiantes.objects.get(documento_identidad=documento)
+            if contraseña != contraseña_c:
+                messages.error(request, 'Las contraseñas no coinciden')
+                return redirect('cambiar_contraseña')
+            else:
+                estudiante.contraseña = contraseña
+                estudiante.save()
+                messages.success(request, 'Contraseña modificada con éxito')
+                return redirect('iniciar_sesion')
+        except Estudiantes.DoesNotExist:
+            messages.info(request, 'Usuario no existente')
+            return redirect('iniciar_sesion')
 
 
 @transaction.atomic
 def get_clases(request, documento):
     estudiante = Estudiantes.objects.select_for_update().get(documento_identidad=documento)
-    registros = estudiante.registro_set.filter(fecha_registro__year=datetime.now().year)
+    registros = estudiante.registros_set.filter(fecha_registro__year=datetime.now().year)# estudiante.registro_set.filter(fecha_registro__year=datetime.now().year)
     clases = Clases.objects.filter(id_clase__in=registros.values('id_clase'))
     materias = Materias.objects.filter(id_materia__in=clases.values('id_materia'))
     profesores = Profesores.objects.filter(id_profesor__in=clases.values('id_profesor'))
     if request.method == 'GET':
         return render(request, 'Estudiante/clases.html', {
+            'title': f'Clases {estudiante.nombre_completo}',
             'estudiante': estudiante,
             'clases': clases,
             'materias': materias,

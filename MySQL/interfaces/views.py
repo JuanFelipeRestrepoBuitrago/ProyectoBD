@@ -7,12 +7,8 @@ from django.db import transaction
 from django.contrib import messages
 
 
-def interfaz_eleccion(request):
-    return render(request, 'Interfaces/archivo.html')
-
-
 def registro_estudiante(request):
-    return render(request, 'Interfaces/registro_estudiante.html')
+    return render(request, 'Principales/registro_estudiante.html')
 
 
 def login(request):
@@ -22,13 +18,17 @@ def login(request):
         try:
             estudiante = Estudiantes.objects.get(documento_identidad=usuario)
             if estudiante.contraseña == contraseña:
-                return redirect('home_estudiante', documento=usuario)
+                return redirect('principal_estudiante', documento=usuario)
             else:
                 messages.error(request, "Error verificacion")
-                return redirect('interfaz_eleccion')
+                return redirect('iniciar_sesion')
         except (Estudiantes.DoesNotExist, ValueError):
             messages.info(request, "No existe usuario")
-            return redirect('interfaz_eleccion')
+            return redirect('iniciar_sesion')
+    else:
+        return render(request, 'Principales/iniciar_sesion.html', {
+                      'title': 'Iniciar Sesión',
+                      })
 
 
 @transaction.atomic
@@ -51,19 +51,18 @@ def home_estudiante(request, documento):
     if request.method == 'GET':
         return render(request, 'Estudiante/estudiante.html', {
             'estudiante': estudiante,
-            'form': EstudianteForm()
+            'title': 'Home',
         })
     else:
-        if request.POST['nombre_completo'] != '':
-            estudiante.nombre_completo = request.POST['nombre_completo']
-        if request.POST['documento_identidad'] != '':
-            estudiante.documento_identidad = request.POST['documento_identidad']
-        if request.POST['programa_academico'] != '':
-            estudiante.programa_academico = request.POST['programa_academico']
-        if request.POST['contraseña'] != '':
-            estudiante.contraseña = request.POST['contraseña']
+        estudiante.nombre_completo = request.POST['nombre_completo']
+        estudiante.documento_identidad = request.POST['documento']
+        estudiante.programa_academico = request.POST['programa_academico']
         estudiante.save()
-        return redirect('home_estudiante', documento=estudiante.documento_identidad)
+        return redirect('principal_estudiante', documento=estudiante.documento_identidad)
+
+
+def cambiar_constraseña(request):
+    pass
 
 
 @transaction.atomic
@@ -86,4 +85,4 @@ def get_clases(request, documento):
         registro = registros.filter(id_clase=clase, fecha_registro__year=datetime.now().year)
 
         registro.delete()
-        return redirect('get_clases', documento=estudiante.documento_identidad)
+        return redirect('clases estudiante', documento=estudiante.documento_identidad)

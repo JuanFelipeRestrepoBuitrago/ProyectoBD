@@ -1,11 +1,14 @@
 from django.urls import path
-from .views import interfaz_eleccion, home_estudiante, get_clases, login, registro_estudiante
+from .views import home_estudiante, get_clases, login, registro_estudiante, cambiar_constraseña
 
 urlpatterns = [
-    path('', interfaz_eleccion, name='interfaz_eleccion'),
-    path('estudiante/<int:documento>', home_estudiante, name='home_estudiante'),
-    path('estudiante/<int:documento>/clases', get_clases, name='get_clases'),
+    # Julio estas son las suyas
+    path('', login, name='iniciar_sesion'),
+    path('registrar/', registro_estudiante, name='registro_estudiante'),
 
-    path('registro/', registro_estudiante, name='registro_estudiante'),
-    path('login/', login, name='login'),
+    # Estas son las mias
+    path('estudiante/<int:documento>', home_estudiante, name='principal_estudiante'),
+    path('estudiante/<int:documento>/clases', get_clases, name='clases_estudiante'),
+    # aunque esta deberia ser parte de las tuyas, pero o hice yo
+    path('cambiar_contraseña/', cambiar_constraseña, name='cambiar_contraseña'),
 ]

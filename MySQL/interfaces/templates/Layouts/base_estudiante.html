@@ -6,7 +6,7 @@
     {% load bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
-    <nav class="navbar ps-5 navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand ps-5  navbar-light bg-light">
         <p class="ms-5 mt-3">
             <strong>{{ estudiante.nombre_completo }}</strong>
         </p>
@@ -45,7 +45,9 @@
         </ul>
     {% endif %}
 
-    {% block content %}
-    {% endblock %}
+    <div class="container container-fluid bg-light bg-gradient">
+        {% block content %}
+        {% endblock %}
+    </div>
 </body>
 </html>

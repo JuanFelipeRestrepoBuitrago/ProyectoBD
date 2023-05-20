@@ -1,39 +1,80 @@
 {% extends 'Layouts/base_estudiante.html' %}
 
 {% block content %}
-    <div class="container">
-        <h1>Clases Registradas</h1>
-        {% for clase in clases %}
-            <form class="row gy-2 gx-3 align-items-center" method="POST">
-                {% csrf_token %}
-                <div class="col-auto">
-                    <label class="visually-hidden" for="autoSizingInput">Clase</label>
-                    <input type="text" name="clase" class="form-control" id="autoSizingInput" value="{{ clase.id_materia.nombre_materia }}{# {{ materia.nombre_materia }} #}-{{clase.id_clase}}" readonly>
-                </div>
-                <div class="col-auto">
-                    <label class="visually-hidden" for="autoSizingInput">Horario</label>
-                    <input type="text" name="horario" class="form-control" id="autoSizingInput" value="{{clase.horario}}" readonly>
-                </div>
-                <div class="col-auto">
-                    <label class="visually-hidden" for="autoSizingInput">Profesor</label>
-                    <input type="text" name="profesor"  class="form-control" id="autoSizingInput" value="{{clase.id_profesor.nombre_completo}}" readonly>
-                </div>
-                <div class="col-auto">
-                    <label class="visually-hidden" for="autoSizingInput">Aula</label>
-                    {% if clase.id_aula_id is None %}
-                        <input type="text" name="aula" class="form-control" id="autoSizingInput" value="Aula no Asignada" readonly>
-                    {% else %}
-                        <input type="text" name="aula" class="form-control" id="autoSizingInput" value="{{clase.id_aula.numero_bloque}}-{{ clase.id_aula.numero_aula }}" readonly>
-                    {% endif %}
-                </div>
-                <div class="col-auto">
-                    <label class="visually-hidden" for="autoSizingInput">Tipo de Clase</label>
-                    <input type="text" name="tipo_clase" class="form-control" id="autoSizingInput" value="{{clase.tipo_clase}}" readonly>
-                </div>
-                <div class="col-auto">
-                    <button type="submit" class="btn btn btn-danger">Eliminar</button>
-                </div>
-            </form>
-        {% endfor %}
+{#    <div class="container">#}
+{#        <h1>Clases Registradas</h1>#}
+{#        {% for clase in clases %}#}
+{#            <form class="row gy-2 gx-3 align-items-center" method="POST">#}
+{#                {% csrf_token %}#}
+{#                <div class="col-auto">#}
+{#                    <label class="visually-hidden" for="autoSizingInput">Clase</label>#}
+{#                    <input type="text" name="clase" class="form-control" id="autoSizingInput" value="{{ clase.id_materia.nombre_materia }}-{{clase.id_clase}}" readonly>#}
+{#                </div>#}
+{#                <div class="col-auto">#}
+{#                    <label class="visually-hidden" for="autoSizingInput">Horario</label>#}
+{#                    <input type="text" name="horario" class="form-control" id="autoSizingInput" value="{{clase.horario}}" readonly>#}
+{#                </div>#}
+{#                <div class="col-auto">#}
+{#                    <label class="visually-hidden" for="autoSizingInput">Profesor</label>#}
+{#                    <input type="text" name="profesor"  class="form-control" id="autoSizingInput" value="{{clase.id_profesor.nombre_completo}}" readonly>#}
+{#                </div>#}
+{#                <div class="col-auto">#}
+{#                    <label class="visually-hidden" for="autoSizingInput">Aula</label>#}
+{#                    {% if clase.id_aula_id is None %}#}
+{#                        <input type="text" name="aula" class="form-control" id="autoSizingInput" value="Aula no Asignada" readonly>#}
+{#                    {% else %}#}
+{#                        <input type="text" name="aula" class="form-control" id="autoSizingInput" value="{{clase.id_aula.numero_bloque}}-{{ clase.id_aula.numero_aula }}" readonly>#}
+{#                    {% endif %}#}
+{#                </div>#}
+{#                <div class="col-auto">#}
+{#                    <label class="visually-hidden" for="autoSizingInput">Tipo de Clase</label>#}
+{#                    <input type="text" name="tipo_clase" class="form-control" id="autoSizingInput" value="{{clase.tipo_clase}}" readonly>#}
+{#                </div>#}
+{#                <div class="col-auto">#}
+{#                    <button type="submit" class="btn btn btn-danger">Eliminar</button>#}
+{#                </div>#}
+{#            </form>#}
+{#        {% endfor %}#}
+{#    </div>#}
+    <div class="row">
+        <div class="col">
+            <h2>Clases Registradas</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Materia</th>
+                        <th>Horario</th>
+                        <th>Profesor</th>
+                        <th>Aula</th>
+                        <th>Tipo de Clase</th>
+                        <th>Eliminar</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for clase in clases %}
+                        <tr>
+                            <td>{{ clase.id_materia.nombre_materia }}-{{clase.id_clase}}</td>
+                            <td>{{clase.horario}}</td>
+                            <td>{{clase.id_profesor.nombre_completo}}</td>
+                            {% if clase.id_aula_id is None %}
+                                <td>Aula no Asignada</td>
+                            {% else %}
+                                <td>{{clase.id_aula.numero_bloque}}-{{ clase.id_aula.numero_aula }}</td>
+                            {% endif %}
+                            <td>{{clase.tipo_clase}}</td>
+                            <td>
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="id_clase" value="{{clase.id_clase}}">
+                                    <button type="submit" class="btn btn btn-danger">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 {% endblock %}

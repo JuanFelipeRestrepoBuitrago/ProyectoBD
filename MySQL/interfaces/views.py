@@ -57,6 +57,7 @@ def home_estudiante(request, documento):
         estudiante.documento_identidad = request.POST['documento']
         estudiante.programa_academico = request.POST['programa_academico']
         estudiante.save()
+        messages.success(request, 'Datos modificados con éxito')
         return redirect('principal_estudiante', documento=estudiante.documento_identidad)
 
 
@@ -88,22 +89,17 @@ def cambiar_constraseña(request):
 @transaction.atomic
 def get_clases(request, documento):
     estudiante = Estudiantes.objects.select_for_update().get(documento_identidad=documento)
-    registros = estudiante.registros_set.filter(fecha_registro__year=datetime.now().year)# estudiante.registro_set.filter(fecha_registro__year=datetime.now().year)
+    registros = estudiante.registros_set.filter(fecha_registro__year=datetime.now().year)
     clases = Clases.objects.filter(id_clase__in=registros.values('id_clase'))
-    materias = Materias.objects.filter(id_materia__in=clases.values('id_materia'))
-    profesores = Profesores.objects.filter(id_profesor__in=clases.values('id_profesor'))
     if request.method == 'GET':
         return render(request, 'Estudiante/clases.html', {
             'title': f'Clases {estudiante.nombre_completo}',
             'estudiante': estudiante,
             'clases': clases,
-            'materias': materias,
-            'profesores': profesores
         })
     else:
-        clase = request.POST['clase']
-        clase = int(str(clase).split('-')[1])
+        clase = request.POST['id_clase']
         registro = registros.filter(id_clase=clase, fecha_registro__year=datetime.now().year)
 
         registro.delete()
-        return redirect('clases estudiante', documento=estudiante.documento_identidad)
+        return redirect('clases_estudiante', documento=estudiante.documento_identidad)

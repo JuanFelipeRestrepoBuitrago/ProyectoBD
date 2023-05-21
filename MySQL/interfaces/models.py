@@ -1,3 +1,5 @@
+from datetime import timedelta, datetime
+
 from django.db import models
 
 
@@ -17,9 +19,9 @@ class Estudiantes(models.Model):
 class Facturas(models.Model):
     id_factura = models.AutoField(primary_key=True, db_comment='N·mero que identifica como ·nica a cada factura emitida.\n')
     fecha_emision = models.DateField(db_comment='Fecha que da constancia de cuando se emitio dicha factura.\n')
-    fecha_vencimiento = models.DateField(blank=True, null=True, db_comment='Fecha que establece el plazo mßximo en el que se puede pagar la factura, esta es dos meses despuÚs de ser emitida.\n')
-    pagado = models.IntegerField(db_comment='Valor boleano que identifica a una factura como paga.\n')
-    valor = models.FloatField(blank=True, null=True, db_comment='Valor total de las materias matriculadas, es el precio que debe pagar la parsona.\n')
+    fecha_vencimiento = models.DateField(db_comment='Fecha que establece el plazo mßximo en el que se puede pagar la factura, esta es dos meses despuÚs de ser emitida.\n')
+    pagado = models.IntegerField(default=False, db_comment='Valor boleano que identifica a una factura como paga.\n')
+    valor = models.FloatField(default=0, blank=True, null=True, db_comment='Valor total de las materias matriculadas, es el precio que debe pagar la parsona.\n')
 
     class Meta:
         managed = False
@@ -41,6 +43,9 @@ class Materias(models.Model):
     id_materia = models.AutoField(primary_key=True, db_comment='Id distintivo que distingue a cada materia, como ·nica.\n')
     nombre_materia = models.CharField(unique=True, max_length=100, db_comment='Nombre con el cual se identifica la materia de las demßs.\n')
     numero_creditos = models.IntegerField(db_comment='Es el n·mero de creditos totales con el que cuenta la materia, y representa el trabajo acßdemico que representa para el estudiante.\n')
+
+    def __str__(self):
+        return self.nombre_materia
 
     class Meta:
         managed = False
@@ -75,6 +80,9 @@ class MateriasPrerrequisito(models.Model):
     id_materia = models.ForeignKey(Materias, models.DO_NOTHING, db_column='id_materia')
     id_materia_prerrequisito = models.ForeignKey(Materias, models.DO_NOTHING, db_column='id_materia_prerrequisito', related_name='materiasprerrequisito_id_materia_prerrequisito_set')
 
+    def __str__(self):
+        return self.id_materia.nombre_materia + " - " + self.id_materia_prerrequisito.nombre_materia
+
     class Meta:
         managed = False
         db_table = 'materias_prerrequisito'
@@ -100,6 +108,9 @@ class Clases(models.Model):
     horario = models.JSONField(db_comment='Es el horario que tendrß asignada la clase en el dÝa o multiples dÝas que se dicte.\n')
     id_aula = models.ForeignKey(Aulas, models.DO_NOTHING, db_column='id_aula', blank=True, null=True)
 
+    def __str__(self):
+        return self.id_materia.nombre_materia + " - " + str(self.id_clase)
+
     class Meta:
         managed = False
         db_table = 'clases'
@@ -109,7 +120,7 @@ class Registros(models.Model):
     id_registro = models.AutoField(primary_key=True)
     codigo_estudiante = models.ForeignKey(Estudiantes, models.DO_NOTHING, db_column='codigo_estudiante', db_comment='Codigo del estudiante que realiza el registro.\n')
     id_clase = models.ForeignKey(Clases, models.DO_NOTHING, db_column='id_clase', db_comment='Identifica la clase registrada por el estudiante.\n')
-    fecha_registro = models.DateField(db_comment='Identifica el la fecha en la cual se llevo a cabo el registro.\n')
+    fecha_registro = models.DateField(auto_now_add=True, db_comment='Identifica el la fecha en la cual se llevo a cabo el registro.\n')
     id_factura = models.ForeignKey(Facturas, models.DO_NOTHING, db_column='id_factura', db_comment='Identificador ·nico de la factura asociada a la transacci¾n.\n')
 
     class Meta:

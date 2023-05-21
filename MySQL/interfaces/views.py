@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Estudiantes, Clases, Materias, Profesores
+from .models import Estudiantes, Clases, Facturas, Registros
 from django.http import HttpResponse
 from datetime import datetime
 from django.db import transaction
@@ -26,8 +26,8 @@ def login(request):
             return redirect('iniciar_sesion')
     else:
         return render(request, 'Principales/iniciar_sesion.html', {
-                      'title': 'Iniciar Sesión',
-                      })
+            'title': 'Iniciar Sesión',
+        })
 
 
 @transaction.atomic
@@ -40,7 +40,7 @@ def registrar_estudiante(request):
         contraseña_c = request.POST.get('contraseña_c')
 
         if contraseña_c != contraseña:
-            messages.error(request,'Las contraseñas no son iguales')
+            messages.error(request, 'Las contraseñas no son iguales')
             return redirect('registro_estudiante')
 
 
@@ -99,7 +99,33 @@ def get_clases(request, documento):
         })
     else:
         clase = request.POST['id_clase']
-        registro = registros.filter(id_clase=clase, fecha_registro__year=datetime.now().year)
+        registro = registros.get(id_clase=clase, fecha_registro__year=datetime.now().year)
 
         registro.delete()
+        return redirect('clases_estudiante', documento=estudiante.documento_identidad)
+
+
+@transaction.atomic
+def registrar_materias(request, documento):
+    estudiante = Estudiantes.objects.select_for_update().get(documento_identidad=documento)
+    clases = Clases.objects.exclude(id_clase__in=estudiante.registros_set.values('id_clase'))
+    registro = Registros.objects.filter(fecha_registro=datetime.now().date(), codigo_estudiante=estudiante, id_factura__pagado=False).first()
+    
+    if request.method == 'GET':
+        return render(request, 'Estudiante/registrar_materias.html', {
+            'title': 'Registrar Materias',
+            'estudiante': estudiante,
+            'clases': clases,
+        })
+    else:
+        clase = request.POST['id_clase']
+        try:
+            if registro is None:
+                raise Facturas.DoesNotExist
+            factura = Facturas.objects.get(id_factura=registro.id_factura_id)
+        except Facturas.DoesNotExist:
+            factura = Facturas.objects.create()
+
+        registro = estudiante.registros_set.create(codigo_estudiante=estudiante, id_clase_id=clase, id_factura=factura)
+        registro.save()
         return redirect('clases_estudiante', documento=estudiante.documento_identidad)

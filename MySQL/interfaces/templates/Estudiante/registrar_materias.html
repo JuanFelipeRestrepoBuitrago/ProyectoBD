@@ -13,7 +13,8 @@
                         <th>Profesor</th>
                         <th>Aula</th>
                         <th>Tipo de Clase</th>
-                        <th>Eliminar</th>
+                        <th>Prerrequisitos</th>
+                        <th>Añadir</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -28,6 +29,14 @@
                                 <td>{{clase.id_aula.numero_bloque}}-{{ clase.id_aula.numero_aula }}</td>
                             {% endif %}
                             <td>{{clase.tipo_clase}}</td>
+                            <td>
+                                {% for materia in clase.id_materia.materiasprerrequisito_set.all %}
+                                    {% if clases %}
+
+                                    {% endif %}
+                                    {{materia.id_materia_prerrequisito.nombre_materia}},
+                                {% endfor %}
+                            </td>
                             <td>
                                 <form method="POST">
                                     {% csrf_token %}

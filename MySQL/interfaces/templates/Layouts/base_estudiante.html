@@ -16,7 +16,7 @@
                     <li class="nav-item">
                         <a class="nav-brand" href="{% url 'principal_estudiante' estudiante.documento_identidad %}">
                             {% load static %}
-                            <img src="{% static 'Home.png' %}" width=30 height=30>
+                            <img src="{% static 'Home.png' %}" width=30 height=30 alt="">
                         </a>
                     </li>
                     <li class="nav-item dropdown ms-5">
@@ -25,7 +25,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="{% url 'clases_estudiante' estudiante.documento_identidad %}">Ver mis Clases</a></li>
-                            <li><a class="dropdown-item" href="#">Registrar Clases</a></li>
+                            <li><a class="dropdown-item" href="{% url 'registrar_materias' estudiante.documento_identidad %}">Registrar Clases</a></li>
                         </ul>
                     </li>
                 </ul>

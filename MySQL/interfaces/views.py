@@ -110,7 +110,7 @@ def registrar_materias(request, documento):
     estudiante = Estudiantes.objects.select_for_update().get(documento_identidad=documento)
     clases = Clases.objects.exclude(id_clase__in=estudiante.registros_set.values('id_clase'))
     registro = Registros.objects.filter(fecha_registro=datetime.now().date(), codigo_estudiante=estudiante, id_factura__pagado=False).first()
-    
+
     if request.method == 'GET':
         return render(request, 'Estudiante/registrar_materias.html', {
             'title': 'Registrar Materias',

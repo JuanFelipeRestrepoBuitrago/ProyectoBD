@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Estudiantes, Clases, Facturas, Registros, Profesores
+from .models import *
 from django.http import HttpResponse
 from datetime import datetime
 from django.db import transaction, IntegrityError
@@ -164,6 +164,8 @@ def facturas_estudiante(request, documento):
 
         messages.success(request, 'Factura modificada con éxito')
         return redirect('facturas_estudiante', documento=estudiante.documento_identidad)
+
+
 @transaction.atomic
 def administracion(request):
     estudiantes = Estudiantes.objects.all()
@@ -175,6 +177,7 @@ def administracion(request):
     if request.method == 'PUT':
         return redirect('cu_estudiantes')
     return render(request, 'Administrador/crud_estudiantes.html', {'estudiantes': estudiantes, 'tittle': 'Admin'})
+
 
 def crud_profesores(request):
     if request.method == "POST":
@@ -198,3 +201,61 @@ def crud_profesores(request):
 
     profesores = Profesores.objects.all()
     return render(request, 'Administrador/crud_profesores.html', {'profesores': profesores, 'tittle': 'Admin'})
+
+
+@transaction.atomic
+def crud_admin(request):
+    administradores = Administradores.objects.all()
+    if request.method == "GET":
+        return render(request, 'Administrador/administradores/crud_administrador.html', {
+            'administradores': administradores,
+            'tittle': 'Administradores',
+        })
+    else:
+        id_admin = request.POST['id_admin']
+        administrador = Administradores.objects.get(usuario=id_admin)
+        administrador.delete()
+        messages.success(request, 'Administrador eliminado con éxito')
+        return redirect('crud_admin')
+
+
+@transaction.atomic
+def edit_admin(request, admin):
+    admin = Administradores.objects.get(usuario=admin)
+
+    if request.method == "GET":
+        return render(request, 'Administrador/administradores/edit_admin.html', {
+            'administrador': admin,
+            'tittle': 'Editar Administrador',
+        })
+    else:
+        contraseña = request.POST['contraseña']
+        contraseña_c = request.POST['contraseña_confirmación']
+
+        if contraseña != contraseña_c:
+            messages.error(request, 'Las contraseñas no coinciden')
+            return redirect('edit_admin', admin=admin.usuario)
+        admin.contraseña = contraseña
+        admin.save()
+        messages.success(request, 'Administrador editado con éxito')
+        return redirect('crud_admin')
+
+
+@transaction.atomic
+def create_admin(request):
+    usuario = request.POST['usuario']
+    contraseña = request.POST['contraseña']
+    contraseña_c = request.POST['contraseña_confirmación']
+
+    if contraseña != contraseña_c:
+        messages.error(request, 'Las contraseñas no coinciden')
+        return redirect('crud_admin')
+    else:
+        try:
+            Administradores.objects.create(usuario=usuario, contraseña=contraseña)
+            messages.success(request, 'Administrador creado con éxito')
+            return redirect('crud_admin')
+        except IntegrityError:
+            messages.info(request, 'El usuario ya existe')
+            return redirect('crud_admin')
+

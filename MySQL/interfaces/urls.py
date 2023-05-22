@@ -1,11 +1,13 @@
 from django.urls import path
-from .views import home_estudiante, get_clases, login, registro_estudiante, cambiar_constraseña, registrar_materias, facturas_estudiante, administracion, crud_profesores
-
+from .views import *
 urlpatterns = [
     # Julio estas son las suyas
     path('', login, name='iniciar_sesion'),
     path('registrar/', registro_estudiante, name='registro_estudiante'),
     path('administracion/', administracion, name='administracion'),
+    path('administracion/administradores/', crud_admin, name="crud_admin"),
+    path('administracion/administradores/editar/<str:admin>', edit_admin, name="edit_admin"),
+    path('administracion/administradores/crear', create_admin, name="create_admin"),
     path('administracion/crud_profesores/', crud_profesores, name="crud_profesores"),
 
     # Estas son las mias

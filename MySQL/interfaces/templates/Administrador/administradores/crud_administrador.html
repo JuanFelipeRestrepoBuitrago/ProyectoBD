@@ -1,0 +1,64 @@
+{% extends 'Layouts/base_administrador.html' %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+            <form method="POST" action="{% url 'create_admin' %}">
+                {% csrf_token %}
+                <div class="form-group mt-2">
+                    <label for="usuario">Usuario</label>
+                    <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Ingrese su Usuario" required>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="contraseña">Contraseña</label>
+                    <input type="password" class="form-control" id="contraseña" name="contraseña" placeholder="Nueva Contraseña" required>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="contraseña_confirmación">Confirmar Contraseña</label>
+                    <input type="password" class="form-control" id="contraseña_confirmación" name="contraseña_confirmación" placeholder="Confirmar Contraseña" required>
+                </div>
+
+                <button type="submit" class="btn mt-4 btn-success">Agregar</button>
+            </form>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-9 col-xl-9">
+            <input type="text" id="search" class="form-control" placeholder="Buscar">
+            <div class="table-responsive">
+                <table class="table table-stripe">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Contraseña</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for administrador in administradores %}
+                            <tr>
+                                <td>{{ administrador.usuario }}</td>
+                                <td >{{ administrador.contraseña }}</td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <form method="GET" action="{% url 'edit_admin' administrador.usuario %}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn btn-secondary btn-sm ms-3">✎</button>
+                                            </form>
+                                        </div>
+                                        <div class="col-1">
+                                            <form method="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="id_admin" value="{{administrador.usuario}}">
+                                                <button type="submit" class="btn btn btn-secondary btn-sm ms-3">🗑</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

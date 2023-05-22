@@ -1,0 +1,82 @@
+{% extends 'Layouts/base_administrador.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" action="{% url 'create_aprobada' %}">
+                        <h2>Crear Aprobada</h2>
+                        {% csrf_token %}
+                        <div class="form-group mt-2">
+                            <label for="estudiante" class="form-label">Estudiante</label>
+                            <input class="form-control" list="estudiantesDataList" name="estudiante" id="estudiante" placeholder="Escriba para Buscar...">
+                            <datalist id="estudiantesDataList">
+                                {% for estudiante in estudiantes %}
+                                    <option value="{{ estudiante.documento_identidad }}">
+                                {% endfor %}
+                            </datalist>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="materia" class="form-label">Materia</label>
+                            <input class="form-control" list="materiasDataList" name="materia" id="materia" placeholder="Escriba para Buscar...">
+                            <datalist id="materiasDataList">
+                                {% for materia in materias %}
+                                    <option value="{{ materia.nombre_materia }}">
+                                {% endfor %}
+                            </datalist>
+                        </div>
+
+                        <button type="submit" class="btn mt-4 btn-success">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
+            <h2>Materias Aprobadas</h2>
+            <p class="mt-3"></p>
+            <div class="table-responsive">
+                <input type="text" id="search" class="form-control" placeholder="Buscar">
+                <p class="mt-3"></p>
+                <table class="table table-stripe" id="table-body">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Estudiante</th>
+                            <th>Documento de Identidad</th>
+                            <th>Materia</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for materia in materias_aprobadas %}
+                            <tr>
+                                <td>{{ materia.id_materia_aprobada }}</td>
+                                <td >{{ materia.codigo_estudiante.nombre_completo }}</td>
+                                <td>{{ materia.codigo_estudiante.documento_identidad }}</td>
+                                <td>{{ materia.id_materia.nombre_materia }}</td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <form method="GET" action="{% url 'edit_aprobada' materia.id_materia_aprobada %}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn btn-secondary btn-sm ms-3">✎</button>
+                                            </form>
+                                        </div>
+                                        <div class="col-1">
+                                            <form method="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="id_materia_aprobada" value="{{materia.id_materia_aprobada}}">
+                                                <button type="submit" class="btn btn btn-secondary btn-sm ms-3">🗑</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'Layouts/base_administrador.html' %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-5">
+            <h1 class="text-start mt-3">Modificar Aprobada</h1>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group mt-2">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" value="{{ materia_aprobada.id_materia_aprobada }}" readonly>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="estudiante" class="form-label">Estudiante</label>
+                    <input class="form-control" list="estudiantesDataList" name="estudiante" id="estudiante" placeholder="Escriba para Buscar..." value="{{ materia_aprobada.codigo_estudiante.documento_identidad }}">
+                    <datalist id="estudiantesDataList">
+                        {% for estudiante in estudiantes %}
+                            <option value="{{ estudiante.documento_identidad }}">
+                        {% endfor %}
+                    </datalist>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="materia" class="form-label">Materia</label>
+                    <input class="form-control" list="materiasDataList" name="materia" id="materia" placeholder="Escriba para Buscar..." value="{{ materia_aprobada.id_materia.nombre_materia }}">
+                    <datalist id="materiasDataList">
+                        {% for materia in materias %}
+                            <option value="{{ materia.nombre_materia }}">
+                        {% endfor %}
+                    </datalist>
+                </div>
+
+                <button type="submit" class="btn mt-4 btn-primary">Editar</button>
+                <button type="button" onclick="location.href='{% url 'crud_aprobadas' %}'" class="btn mt-4 btn-secondary">Cancelar</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

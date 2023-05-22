@@ -422,3 +422,73 @@ def create_materias_prerrequisito(request):
         messages.info(request, 'La materia o el prerrequisito no existen')
         return redirect('crud_prerrequisitos')
 
+
+@transaction.atomic
+def crud_materias_aprobadas(request):
+    materias_aprobadas = MateriasAprobadas.objects.all()
+    materias = Materias.objects.all()
+    estudiantes = Estudiantes.objects.all()
+
+    if request.method == "GET":
+        return render(request, 'Administrador/materias/aprobadas/crud_aprobadas.html', {
+            'materias_aprobadas': materias_aprobadas,
+            'tittle': 'Materias Aprobadas',
+            'materias': materias,
+            'estudiantes': estudiantes,
+        })
+    else:
+        id_materia_aprobada = request.POST['id_materia_aprobada']
+        materia_aprobada = MateriasAprobadas.objects.get(id_materia_aprobada=id_materia_aprobada)
+        materia_aprobada.delete()
+        messages.success(request, 'Materia Aprobada eliminada con éxito')
+        return redirect('crud_aprobadas')
+
+
+@transaction.atomic
+def edit_materias_aprobadas(request, aprobada):
+    materia_aprobada = MateriasAprobadas.objects.get(id_materia_aprobada=aprobada)
+    materias = Materias.objects.all()
+    estudiantes = Estudiantes.objects.all()
+
+    if request.method == "GET":
+        return render(request, 'Administrador/materias/aprobadas/edit_aprobadas.html', {
+                      'materia_aprobada': materia_aprobada,
+                      'tittle': 'Editar Materia Aprobada',
+                      'materias': materias,
+                      'estudiantes': estudiantes,
+                      })
+    else:
+        nombre_materia = request.POST['materia']
+        documento_estudiante = request.POST['estudiante']
+
+        try:
+            materia_aprobada.id_materia_id = materias.get(nombre_materia=nombre_materia).id_materia
+            materia_aprobada.codigo_estudiante_id = estudiantes.get(documento_identidad=documento_estudiante).codigo_estudiante
+            materia_aprobada.save()
+            messages.success(request, 'Materia Aprobada editada con éxito')
+            return redirect('crud_aprobadas')
+        except IntegrityError:
+            messages.info(request, 'La materia aprobada ya existe')
+            return redirect('edit_aprobada', aprobada=materia_aprobada.id_materia_aprobada)
+        except (Materias.DoesNotExist, Estudiantes.DoesNotExist):
+            messages.info(request, 'La materia o el estudiante no existen')
+            return redirect('edit_aprobada', aprobada=materia_aprobada.id_materia_aprobada)
+
+
+@transaction.atomic
+def create_materias_aprobadas(request):
+    nombre_materia = request.POST['materia']
+    documento = request.POST['estudiante']
+
+    try:
+        MateriasAprobadas.objects.create(id_materia_id=Materias.objects.get(nombre_materia=nombre_materia).id_materia,
+                                         codigo_estudiante_id=Estudiantes.objects.get(documento_identidad=documento).codigo_estudiante)
+        messages.success(request, 'Materia Aprobada creada con éxito')
+        return redirect('crud_aprobadas')
+    except IntegrityError:
+        messages.info(request, 'La materia aprobada ya existe')
+        return redirect('crud_aprobadas')
+    except (Materias.DoesNotExist, Estudiantes.DoesNotExist):
+        messages.info(request, 'La materia o el estudiante no existen')
+        return redirect('crud_aprobadas')
+

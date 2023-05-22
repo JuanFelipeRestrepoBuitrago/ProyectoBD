@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import *
+
 urlpatterns = [
     path('', login, name='iniciar_sesion'),
     path('registrar/', registro_estudiante, name='registro_estudiante'),
@@ -15,10 +16,13 @@ urlpatterns = [
     path('administracion/materias/', crud_materias, name="crud_materias"),
     path('administracion/materias/editar/<int:materia>', edit_materias, name="edit_materia"),
     path('administracion/materias/crear', create_materias, name="create_materia"),
-    path('administracion/materias/prerrequisito', crud_materias_prerrequisito, name="crud_prerrequisitos"),
-    path('administracion/materias/prerrequisito/editar/<int:prerrequisito>', edit_materias_prerrequisito
-                                                                           , name="edit_prerrequisito"),
-    path('administracion/materias/prerrequisito/crear', create_materias_prerrequisito, name="create_prerrequisito"),
+    path('administracion/materias/prerrequisitos', crud_materias_prerrequisito, name="crud_prerrequisitos"),
+    path('administracion/materias/prerrequisitos/editar/<int:prerrequisito>', edit_materias_prerrequisito
+         , name="edit_prerrequisito"),
+    path('administracion/materias/prerrequisitos/crear', create_materias_prerrequisito, name="create_prerrequisito"),
+    path('administracion/materias/aprobadas', crud_materias_aprobadas, name="crud_aprobadas"),
+    path('administracion/materias/aprobadas/editar/<int:aprobada>', edit_materias_aprobadas, name="edit_aprobada"),
+    path('administracion/materias/aprobadas/crear', create_materias_aprobadas, name="create_aprobada"),
 
     path('estudiante/<int:documento>', home_estudiante, name='principal_estudiante'),
     path('estudiante/<int:documento>/clases', get_clases, name='clases_estudiante'),

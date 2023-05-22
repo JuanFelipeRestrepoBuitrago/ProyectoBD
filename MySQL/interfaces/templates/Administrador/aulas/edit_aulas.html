@@ -1,0 +1,47 @@
+{% extends 'Layouts/base_administrador.html' %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-5">
+            <h1 class="text-start mt-3">Modificar Aula</h1>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group mt-2">
+                    <label for="numero_bloque">Número del Bloque</label>
+                    <input type="number" class="form-control" id="numero_bloque" name="numero_bloque" placeholder="Ingrese el Número del Bloque" value="{{ aula.numero_bloque }}" required>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="numero_aula">Número del Aula</label>
+                    <input type="number" class="form-control" id="numero_aula" name="numero_aula" placeholder="Ingrese el Número del Aula" value="{{ aula.numero_aula }}" required>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="capacidad">Capacidad</label>
+                    <input type="number" class="form-control" id="capacidad" name="capacidad" placeholder="Ingrese la Capacidad del Aula" value="{{ aula.capacidad }}" required>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="sede">Sede</label>
+                    <input type="text" class="form-control" id="sede" name="sede" placeholder="Ingrese la Sede del Aula" value="{{ aula.sede }}" required>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="tipo_aula">Tipo de Aula</label>
+                    <select class="form-select" name="tipo_aula" id="tipo_aula">
+                        {% if aula.tipo_aula is None %}
+                            <option selected value="">Seleccione el tipo de aula...</option>
+                        {% else %}
+                            <option value="">Seleccione el tipo de aula...</option>
+                        {% endif %}
+                        {% for tipo_aula in tipos_aulas %}
+                            {% if tipo_aula == aula.tipo_aula %}
+                                <option selected value="{{tipo_aula}}">{{tipo_aula}}</option>
+                            {% else %}
+                                <option value="{{tipo_aula}}">{{tipo_aula}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn mt-4 btn-primary">Editar</button>
+                <button type="button" onclick="location.href='{% url 'crud_aulas' %}'" class="btn mt-4 btn-secondary">Cancelar</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'Layouts/base_administrador.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" action="{% url 'create_aula' %}">
+                        <h2>Crear Aula</h2>
+                        {% csrf_token %}
+                        <div class="form-group mt-2">
+                            <label for="numero_bloque">Número del Bloque</label>
+                            <input type="number" class="form-control" id="numero_bloque" name="numero_bloque" placeholder="Ingrese el Número del Bloque" required>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="numero_aula">Número del Aula</label>
+                            <input type="number" class="form-control" id="numero_aula" name="numero_aula" placeholder="Ingrese el Número del Aula" required>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="capacidad">Capacidad</label>
+                            <input type="number" class="form-control" id="capacidad" name="capacidad" placeholder="Ingrese la Capacidad del Aula" required>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="sede">Sede</label>
+                            <input type="text" class="form-control" id="sede" name="sede" placeholder="Ingrese la Sede del Aula" required>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="tipo_aula">Tipo de Aula</label>
+                            <select class="form-select" name="tipo_aula" id="tipo_aula">
+                                <option selected value="">Seleccione el tipo de aula...</option>
+                                {% for tipos_aula in tipos_aulas %}
+                                    <option value="{{tipos_aula}}">{{tipos_aula}}</option>
+                                {% endfor %}
+
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn mt-4 btn-success">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
+            <h2>Aulas</h2>
+            <p class="mt-3"></p>
+            <div class="table-responsive">
+                <input type="text" id="search" class="form-control" placeholder="Buscar">
+                <p class="mt-3"></p>
+                <table class="table table-stripe" id="table-body">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Número del Bloque</th>
+                            <th>Número del Aula</th>
+                            <th>Capacidad</th>
+                            <th>Sede</th>
+                            <th>Tipo de Aula</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for aula in aulas %}
+                            <tr>
+                                <td>{{aula.id_aula}}</td>
+                                <td>{{aula.numero_bloque}}</td>
+                                <td>{{aula.numero_aula}}</td>
+                                <td>{{aula.capacidad}}</td>
+                                <td>{{aula.sede}}</td>
+                                <td>{% if aula.tipo_aula is None%} Ninguno {% else %} {{aula.tipo_aula}} {% endif %}</td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <form method="GET" action="{% url 'edit_aula' aula.id_aula %}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn btn-secondary btn-sm ms-3">✎</button>
+                                            </form>
+                                        </div>
+                                        <div class="col-1">
+                                            <form method="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="id_aula" value="{{aula.id_aula}}">
+                                                <button type="submit" class="btn btn btn-secondary btn-sm ms-3">🗑</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

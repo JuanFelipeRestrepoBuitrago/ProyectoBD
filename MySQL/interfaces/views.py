@@ -373,10 +373,10 @@ def edit_materias_prerrequisito(request, prerrequisito):
 
     if request.method == "GET":
         return render(request, 'Administrador/materias/prerrequisitos/edit_prerrequisito.html', {
-                      'materia_prerrequisito': materia_prerrequisito,
-                      'tittle': 'Editar Materia Prerrequisito',
-                      'materias': materias,
-                      })
+            'materia_prerrequisito': materia_prerrequisito,
+            'tittle': 'Editar Materia Prerrequisito',
+            'materias': materias,
+        })
     else:
         nombre_materia = request.POST['materia']
         nombre_prerrequisito = request.POST['prerrequisito']
@@ -452,18 +452,19 @@ def edit_materias_aprobadas(request, aprobada):
 
     if request.method == "GET":
         return render(request, 'Administrador/materias/aprobadas/edit_aprobadas.html', {
-                      'materia_aprobada': materia_aprobada,
-                      'tittle': 'Editar Materia Aprobada',
-                      'materias': materias,
-                      'estudiantes': estudiantes,
-                      })
+            'materia_aprobada': materia_aprobada,
+            'tittle': 'Editar Materia Aprobada',
+            'materias': materias,
+            'estudiantes': estudiantes,
+        })
     else:
         nombre_materia = request.POST['materia']
         documento_estudiante = request.POST['estudiante']
 
         try:
             materia_aprobada.id_materia_id = materias.get(nombre_materia=nombre_materia).id_materia
-            materia_aprobada.codigo_estudiante_id = estudiantes.get(documento_identidad=documento_estudiante).codigo_estudiante
+            materia_aprobada.codigo_estudiante_id = estudiantes.get(
+                documento_identidad=documento_estudiante).codigo_estudiante
             materia_aprobada.save()
             messages.success(request, 'Materia Aprobada editada con éxito')
             return redirect('crud_aprobadas')
@@ -482,7 +483,8 @@ def create_materias_aprobadas(request):
 
     try:
         MateriasAprobadas.objects.create(id_materia_id=Materias.objects.get(nombre_materia=nombre_materia).id_materia,
-                                         codigo_estudiante_id=Estudiantes.objects.get(documento_identidad=documento).codigo_estudiante)
+                                         codigo_estudiante_id=Estudiantes.objects.get(
+                                             documento_identidad=documento).codigo_estudiante)
         messages.success(request, 'Materia Aprobada creada con éxito')
         return redirect('crud_aprobadas')
     except IntegrityError:
@@ -492,3 +494,73 @@ def create_materias_aprobadas(request):
         messages.info(request, 'La materia o el estudiante no existen')
         return redirect('crud_aprobadas')
 
+
+@transaction.atomic
+def crud_aulas(request):
+    aulas = Aulas.objects.all()
+    if request.method == "GET":
+        return render(request, 'Administrador/aulas/crud_aulas.html', {
+            'aulas': aulas,
+            'tittle': 'Aulas',
+            'tipos_aulas': ("Clase", 'Laboratorio', 'Química', 'Computadores', 'Electrónica', 'Mecánica', 'Musical'),
+        })
+    else:
+        id_aula = request.POST['id_aula']
+        aula = Aulas.objects.get(id_aula=id_aula)
+        aula.delete()
+        messages.success(request, 'Aula eliminada con éxito')
+        return redirect('crud_aulas')
+
+
+@transaction.atomic
+def edit_aulas(request, aula):
+    aula = Aulas.objects.get(id_aula=aula)
+    if request.method == "GET":
+        return render(request, 'Administrador/aulas/edit_aulas.html', {
+            'aula': aula,
+            'tittle': 'Editar Aula',
+            'tipos_aulas': ("Clase", 'Laboratorio', 'Química', 'Computadores', 'Electrónica', 'Mecánica', 'Musical'),
+        })
+    else:
+        numero_bloque = request.POST['numero_bloque']
+        numero_aula = request.POST['numero_aula']
+        capacidad = request.POST['capacidad']
+        sede = request.POST['sede']
+        if request.POST['tipo_aula'] == '':
+            tipo_aula = None
+        else:
+            tipo_aula = request.POST['tipo_aula']
+
+        try:
+            aula.numero_bloque = numero_bloque
+            aula.numero_aula = numero_aula
+            aula.capacidad = capacidad
+            aula.sede = sede
+            aula.tipo_aula = tipo_aula
+            aula.save()
+            messages.success(request, 'Aula editada con éxito')
+            return redirect('crud_aulas')
+        except IntegrityError:
+            messages.info(request, 'El aula ya existe')
+            return redirect('edit_aula', aula=aula.id_aula)
+
+
+@transaction.atomic
+def create_aulas(request):
+    numero_bloque = request.POST['numero_bloque']
+    numero_aula = request.POST['numero_aula']
+    capacidad = request.POST['capacidad']
+    sede = request.POST['sede']
+    if request.POST['tipo_aula'] == '':
+        tipo_aula = None
+    else:
+        tipo_aula = request.POST['tipo_aula']
+
+    try:
+        Aulas.objects.create(numero_bloque=numero_bloque, numero_aula=numero_aula, capacidad=capacidad, sede=sede,
+                             tipo_aula=tipo_aula)
+        messages.success(request, 'Aula creada con éxito')
+        return redirect('crud_aulas')
+    except IntegrityError:
+        messages.info(request, 'El aula ya existe')
+        return redirect('crud_aulas')

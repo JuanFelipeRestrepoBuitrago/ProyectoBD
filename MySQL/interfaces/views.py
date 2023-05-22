@@ -293,3 +293,55 @@ def create_profesores(request):
     except IntegrityError:
         messages.info(request, 'El profesor con ese documento ya existe')
         return redirect('crud_profesores')
+
+
+@transaction.atomic
+def crud_materias(request):
+    materias = Materias.objects.all()
+    if request.method == "GET":
+        return render(request, 'Administrador/materias/crud_materias.html', {
+            'materias': materias,
+            'tittle': 'Materias',
+        })
+    else:
+        id_materia = request.POST['id_materia']
+        materia = Materias.objects.get(id_materia=id_materia)
+        materia.delete()
+        messages.success(request, 'Materia eliminada con éxito')
+        return redirect('crud_materias')
+
+
+@transaction.atomic
+def edit_materias(request, materia):
+    materia = Materias.objects.get(id_materia=materia)
+
+    if request.method == "GET":
+        return render(request, 'Administrador/materias/edit_materias.html', {
+            'materia': materia,
+            'tittle': 'Editar Materia',
+        })
+    else:
+        nombre_materia = request.POST['nombre']
+        numero_creditos = request.POST['creditos']
+        try:
+            materia.nombre_materia = nombre_materia
+            materia.numero_creditos = numero_creditos
+            materia.save()
+            messages.success(request, 'Materia editada con éxito')
+            return redirect('crud_materias')
+        except IntegrityError:
+            messages.info(request, 'La materia con ese nombre ya existe')
+            return redirect('edit_materias', materia=materia.id_materia)
+
+
+@transaction.atomic
+def create_materias(request):
+    nombre_materia = request.POST['nombre']
+    numero_creditos = request.POST['creditos']
+    try:
+        Materias.objects.create(nombre_materia=nombre_materia, numero_creditos=numero_creditos)
+        messages.success(request, 'Materia creada con éxito')
+        return redirect('crud_materias')
+    except IntegrityError:
+        messages.info(request, 'La materia con ese nombre ya existe')
+        return redirect('crud_materias')

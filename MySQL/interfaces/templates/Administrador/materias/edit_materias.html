@@ -1,0 +1,27 @@
+{% extends 'Layouts/base_administrador.html' %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-5">
+            <h1 class="text-start mt-3">Modificar Materia</h1>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group mt-2">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" value="{{ materia.id_materia }}" readonly>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese el Nombre de la Materia" value="{{ materia.nombre_materia }}" required>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="creditos"># de Créditos</label>
+                    <input type="number" class="form-control" id="creditos" name="creditos" placeholder="Ingrese el Número de Créditos" value="{{ materia.numero_creditos }}" required>
+                </div>
+
+                <button type="submit" class="btn mt-4 btn-primary">Editar</button>
+                <button type="button" onclick="location.href='{% url 'crud_materias' %}'" class="btn mt-4 btn-secondary">Cancelar</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

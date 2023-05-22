@@ -12,6 +12,9 @@ urlpatterns = [
     path('administracion/profesores/', crud_profesores, name="crud_profesores"),
     path('administracion/profesores/editar/<int:profesor>', edit_profesores, name="edit_profe"),
     path('administracion/profesores/crear', create_profesores, name="create_profe"),
+    path('administracion/materias/', crud_materias, name="crud_materias"),
+    path('administracion/materias/editar/<int:materia>', edit_materias, name="edit_materia"),
+    path('administracion/materias/crear', create_materias, name="create_materia"),
 
     path('estudiante/<int:documento>', home_estudiante, name='principal_estudiante'),
     path('estudiante/<int:documento>/clases', get_clases, name='clases_estudiante'),

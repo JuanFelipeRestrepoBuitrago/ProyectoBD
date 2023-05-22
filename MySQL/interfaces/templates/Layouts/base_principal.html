@@ -11,18 +11,19 @@
     </nav>
 </head>
 <body>
-
-{% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <div class="alert alert-warning" role="alert">
-              {{ message }}
-            </div>
-        {% endfor %}
-    </ul>
-{% endif %}
-
-{% block content %}
-{% endblock %}
+    <div class="row">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-dismissible alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}">
+                        <strong class="text-dark">{{ message }}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    {% block content %}
+    {% endblock %}
 </body>
 </html>

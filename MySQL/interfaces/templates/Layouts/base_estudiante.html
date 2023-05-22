@@ -27,6 +27,9 @@
                             <li><a class="dropdown-item" href="{% url 'clases_estudiante' estudiante.documento_identidad %}">Ver mis Clases</a></li>
                             <li><a class="dropdown-item" href="{% url 'registrar_materias' estudiante.documento_identidad %}">Registrar Clases</a></li>
                         </ul>
+                        <li class="nav-item">
+                        <a class="nav-link" href="{% url 'facturas_estudiante' estudiante.documento_identidad %}">Facturas</a>
+                    </li>
                     </li>
                 </ul>
             </div>
@@ -34,18 +37,28 @@
     </nav>
 </head>
 <body>
-
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <div class="alert alert-warning" role="alert">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        </ul>
-    {% endif %}
-
     <div class="container container-fluid bg-light bg-gradient">
+        <div class="row">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <div class="alert alert-dismissible alert-
+                            {% if message.tags == 'error' %}
+                                danger
+                            {% elif message.tags == 'success' %}
+                                success
+                            {% elif message.tags == 'warning' %}
+                                warning
+                            {% elif message.tags == 'info' %}
+                                info
+                            {% endif %}">
+                            <strong class="text-dark">{{ message }}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
         {% block content %}
         {% endblock %}
     </div>

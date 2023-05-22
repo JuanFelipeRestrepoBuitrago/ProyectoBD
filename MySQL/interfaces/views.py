@@ -99,9 +99,10 @@ def get_clases(request, documento):
         })
     else:
         clase = request.POST['id_clase']
-        registro = registros.get(id_clase=clase, fecha_registro__year=datetime.now().year)
+        registro = registros.get(id_clase=clase)
 
         registro.delete()
+        messages.success(request, 'Materia eliminada con éxito')
         return redirect('clases_estudiante', documento=estudiante.documento_identidad)
 
 
@@ -128,4 +129,28 @@ def registrar_materias(request, documento):
 
         registro = estudiante.registros_set.create(codigo_estudiante=estudiante, id_clase_id=clase, id_factura=factura)
         registro.save()
+        messages.success(request, 'Materia registrada y factura generada con éxito')
         return redirect('clases_estudiante', documento=estudiante.documento_identidad)
+
+
+@transaction.atomic
+def facturas_estudiante(request, documento):
+    estudiante = Estudiantes.objects.select_for_update().get(documento_identidad=documento)
+    registros = estudiante.registros_set
+    facturas = Facturas.objects.filter(id_factura__in=registros.values('id_factura'))
+    if request.method == 'GET':
+        return render(request, 'Estudiante/facturas.html', {
+            'title': 'Facturas',
+            'estudiante': estudiante,
+            'facturas': facturas,
+        })
+    else:
+        factura = request.POST['id_factura']
+        pagado = request.POST['pagado']
+        print(pagado)
+        factura = facturas.get(id_factura=factura)
+        factura.pagado = pagado
+        factura.save()
+
+        messages.success(request, 'Factura modificada con éxito')
+        return redirect('facturas_estudiante', documento=estudiante.documento_identidad)

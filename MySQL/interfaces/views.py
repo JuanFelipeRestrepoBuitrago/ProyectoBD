@@ -2,12 +2,37 @@ from django.shortcuts import render, redirect
 from .models import Estudiantes, Clases, Facturas, Registros
 from django.http import HttpResponse
 from datetime import datetime
-from django.db import transaction
+from django.db import transaction, IntegrityError
 from django.contrib import messages
 
 
+@transaction.atomic
 def registro_estudiante(request):
-    return render(request, 'Principales/registro_estudiante.html')
+    if request.method == "GET":
+        return render(request, 'Principales/registro_estudiante.html', {
+            'title': 'Registrar Estudiante',
+        })
+    else:
+        documento = request.POST['documento']
+        nombre = request.POST['nombre']
+        programa_academico = request.POST['programa_academico']
+        contraseña = request.POST['contraseña']
+        contraseña_c = request.POST['contraseña_c']
+
+        try:
+            if contraseña != contraseña_c:
+                messages.error(request, 'Las contraseñas no coinciden')
+                return redirect('registro_estudiante')
+            Estudiantes.objects.create(documento_identidad=documento, nombre_completo=nombre,
+                                       programa_academico=programa_academico, contraseña=contraseña)
+            messages.success(request, 'Usuario creado con éxito')
+            return redirect('iniciar_sesion')
+        except ValueError:
+            messages.error(request, 'Error al crear usuario')
+            return redirect('registro_estudiante')
+        except IntegrityError:
+            messages.error(request, 'El usuario con ese documento ya existe')
+            return redirect('registro_estudiante')
 
 
 def login(request):
@@ -28,20 +53,6 @@ def login(request):
         return render(request, 'Principales/iniciar_sesion.html', {
             'title': 'Iniciar Sesión',
         })
-
-
-@transaction.atomic
-def registrar_estudiante(request):
-    if request.method == 'POST':
-        nombre = request.POST.get('nombre')
-        documento = request.POST.get('documento')
-        programa = request.POST.get('programa_academico')
-        contraseña = request.POST.get('contraseña')
-        contraseña_c = request.POST.get('contraseña_c')
-
-        if contraseña_c != contraseña:
-            messages.error(request, 'Las contraseñas no son iguales')
-            return redirect('registro_estudiante')
 
 
 @transaction.atomic

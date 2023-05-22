@@ -1,9 +1,8 @@
 {% extends 'Layouts/base_principal.html' %}
 
 {% block content %}
-<div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col col-md-6">
             <form method="POST">
                 {% csrf_token %}
                 <div class="form-group">
@@ -16,7 +15,6 @@
                 </div>
                 <button type="submit" class="btn btn-primary mt-2">Iniciar sesión</button>
             </form>
-
             <p class="mt-3">
                 ¿No tienes una cuenta?
                 <a href="{% url 'registro_estudiante' %}">Registrar usuario</a>
@@ -27,5 +25,4 @@
             </p>
         </div>
     </div>
-</div>
 {% endblock %}

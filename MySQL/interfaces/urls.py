@@ -15,6 +15,10 @@ urlpatterns = [
     path('administracion/materias/', crud_materias, name="crud_materias"),
     path('administracion/materias/editar/<int:materia>', edit_materias, name="edit_materia"),
     path('administracion/materias/crear', create_materias, name="create_materia"),
+    path('administracion/materias/prerrequisito', crud_materias_prerrequisito, name="crud_prerrequisitos"),
+    path('administracion/materias/prerrequisito/editar/<int:prerrequisito>', edit_materias_prerrequisito
+                                                                           , name="edit_prerrequisito"),
+    path('administracion/materias/prerrequisito/crear', create_materias_prerrequisito, name="create_prerrequisito"),
 
     path('estudiante/<int:documento>', home_estudiante, name='principal_estudiante'),
     path('estudiante/<int:documento>/clases', get_clases, name='clases_estudiante'),

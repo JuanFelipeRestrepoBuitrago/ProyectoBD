@@ -345,3 +345,80 @@ def create_materias(request):
     except IntegrityError:
         messages.info(request, 'La materia con ese nombre ya existe')
         return redirect('crud_materias')
+
+
+@transaction.atomic
+def crud_materias_prerrequisito(request):
+    materias_prerrequisito = MateriasPrerrequisito.objects.all()
+    materias = Materias.objects.all()
+
+    if request.method == "GET":
+        return render(request, 'Administrador/materias/prerrequisitos/crud_prerrequisitos.html', {
+            'materias_prerrequisito': materias_prerrequisito,
+            'tittle': 'Materias Prerrequisito',
+            'materias': materias,
+        })
+    else:
+        id_materia_prerrequisito = request.POST['id_materia_prerrequisito']
+        materia_prerrequisito = MateriasPrerrequisito.objects.get(id_prerrequisito=id_materia_prerrequisito)
+        materia_prerrequisito.delete()
+        messages.success(request, 'Materia Prerrequisito eliminada con éxito')
+        return redirect('crud_prerrequisitos')
+
+
+@transaction.atomic
+def edit_materias_prerrequisito(request, prerrequisito):
+    materia_prerrequisito = MateriasPrerrequisito.objects.get(id_prerrequisito=prerrequisito)
+    materias = Materias.objects.all()
+
+    if request.method == "GET":
+        return render(request, 'Administrador/materias/prerrequisitos/edit_prerrequisito.html', {
+                      'materia_prerrequisito': materia_prerrequisito,
+                      'tittle': 'Editar Materia Prerrequisito',
+                      'materias': materias,
+                      })
+    else:
+        nombre_materia = request.POST['materia']
+        nombre_prerrequisito = request.POST['prerrequisito']
+
+        try:
+            materia_prerrequisito.id_materia_id = materias.get(nombre_materia=nombre_materia).id_materia
+            materia_prerrequisito.id_materia_prerrequisito_id = materias.get(
+                nombre_materia=nombre_prerrequisito).id_materia
+
+            if nombre_materia == nombre_prerrequisito:
+                messages.error(request, 'La materia y el prerrequisito no pueden ser iguales')
+                return redirect('edit_prerrequisito', prerrequisito=materia_prerrequisito.id_prerrequisito)
+            materia_prerrequisito.save()
+            messages.success(request, 'Materia Prerrequisito editada con éxito')
+            return redirect('crud_prerrequisitos')
+        except IntegrityError:
+            messages.info(request, 'La materia prerrequisito ya existe')
+            return redirect('edit_prerrequisito', prerrequisito=materia_prerrequisito.id_prerrequisito)
+        except Materias.DoesNotExist:
+            messages.info(request, 'La materia o el prerrequisito no existen')
+            return redirect('edit_prerrequisito', prerrequisito=materia_prerrequisito.id_prerrequisito)
+
+
+@transaction.atomic
+def create_materias_prerrequisito(request):
+    materias = Materias.objects.all()
+    nombre_materia = request.POST['materia']
+    nombre_prerrequisito = request.POST['prerrequisito']
+
+    try:
+        if nombre_prerrequisito == nombre_materia:
+            messages.error(request, 'La materia y el prerrequisito no pueden ser iguales')
+            return redirect('crud_prerrequisitos')
+        MateriasPrerrequisito.objects.create(id_materia_id=materias.get(nombre_materia=nombre_materia).id_materia,
+                                             id_materia_prerrequisito_id=materias.get(
+                                                 nombre_materia=nombre_prerrequisito).id_materia)
+        messages.success(request, 'Materia Prerrequisito creada con éxito')
+        return redirect('crud_prerrequisitos')
+    except IntegrityError:
+        messages.info(request, 'La materia prerrequisito ya existe')
+        return redirect('crud_prerrequisitos')
+    except Materias.DoesNotExist:
+        messages.info(request, 'La materia o el prerrequisito no existen')
+        return redirect('crud_prerrequisitos')
+

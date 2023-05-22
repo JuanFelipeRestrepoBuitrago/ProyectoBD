@@ -54,6 +54,7 @@ def login(request):
             'title': 'Iniciar Sesión',
         })
 
+
 @transaction.atomic
 def home_estudiante(request, documento):
     estudiante = Estudiantes.objects.select_for_update().get(documento_identidad=documento)
@@ -120,7 +121,8 @@ def get_clases(request, documento):
 def registrar_materias(request, documento):
     estudiante = Estudiantes.objects.select_for_update().get(documento_identidad=documento)
     clases = Clases.objects.exclude(id_clase__in=estudiante.registros_set.values('id_clase'))
-    registro = Registros.objects.filter(fecha_registro=datetime.now().date(), codigo_estudiante=estudiante, id_factura__pagado=False).first()
+    registro = Registros.objects.filter(fecha_registro=datetime.now().date(), codigo_estudiante=estudiante,
+                                        id_factura__pagado=False).first()
 
     if request.method == 'GET':
         return render(request, 'Estudiante/registrar_materias.html', {
@@ -179,30 +181,6 @@ def administracion(request):
     return render(request, 'Administrador/crud_estudiantes.html', {'estudiantes': estudiantes, 'tittle': 'Admin'})
 
 
-def crud_profesores(request):
-    if request.method == "POST":
-        if 'id_profesor' in request.POST:
-            codigo_profesor = request.POST.get('id_profesor')
-            profesor = Profesores.objects.get(id_profesor=codigo_profesor)
-            profesor.delete()
-        else:
-            documento = request.POST.get('documento')
-            certificaciones = request.POST.get('certificaciones')
-            nombre = request.POST.get('nombre_completo')
-            try:
-                Profesores.objects.get(documento=documento)
-                messages.error(request, "El profesor ya existe")
-                return redirect('crud_profesores')
-            except Profesores.DoesNotExist:
-                profesor = Profesores.objects.create(documento=documento, certificaciones=certificaciones, nombre_completo=nombre)
-                profesor.save()
-                messages.success(request, "El profesor se guardó correctamente")
-                return redirect('crud_profesores')
-
-    profesores = Profesores.objects.all()
-    return render(request, 'Administrador/crud_profesores.html', {'profesores': profesores, 'tittle': 'Admin'})
-
-
 @transaction.atomic
 def crud_admin(request):
     administradores = Administradores.objects.all()
@@ -259,3 +237,59 @@ def create_admin(request):
             messages.info(request, 'El usuario ya existe')
             return redirect('crud_admin')
 
+
+@transaction.atomic
+def crud_profesores(request):
+    profesores = Profesores.objects.all()
+    if request.method == "GET":
+        return render(request, 'Administrador/profesores/crud_profesores.html', {
+            'profesores': profesores,
+            'tittle': 'Profesores',
+        })
+    else:
+        id_profesor = request.POST['id_profesor']
+        profesor = Profesores.objects.get(id_profesor=id_profesor)
+        profesor.delete()
+        messages.success(request, 'Profesor eliminado con éxito')
+        return redirect('crud_profesores')
+
+
+@transaction.atomic
+def edit_profesores(request, profesor):
+    profesor = Profesores.objects.get(id_profesor=profesor)
+
+    if request.method == "GET":
+        return render(request, 'Administrador/profesores/edit_profesores.html', {
+            'profesor': profesor,
+            'tittle': 'Editar Profesor',
+        })
+    else:
+        nombre_completo = request.POST['nombre_completo']
+        certificaciones = request.POST['certificaciones']
+        documento_identidad = request.POST['documento']
+
+        try:
+            profesor.nombre_completo = nombre_completo
+            profesor.certificaciones = certificaciones
+            profesor.documento = documento_identidad
+            profesor.save()
+            messages.success(request, 'Profesor editado con éxito')
+            return redirect('crud_profesores')
+        except IntegrityError:
+            messages.info(request, 'El profesor con ese documento ya existe')
+            return redirect('edit_profe', profesor=profesor.id_profesor)
+
+
+@transaction.atomic
+def create_profesores(request):
+    nombre_completo = request.POST['nombre_completo']
+    certificaciones = request.POST['certificaciones']
+    documento_identidad = request.POST['documento']
+    try:
+        Profesores.objects.create(nombre_completo=nombre_completo, certificaciones=certificaciones,
+                                  documento=documento_identidad)
+        messages.success(request, 'Profesor creado con éxito')
+        return redirect('crud_profesores')
+    except IntegrityError:
+        messages.info(request, 'El profesor con ese documento ya existe')
+        return redirect('crud_profesores')

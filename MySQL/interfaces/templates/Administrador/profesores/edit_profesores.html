@@ -1,0 +1,27 @@
+{% extends 'Layouts/base_administrador.html' %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-5">
+            <h1 class="text-start mt-3">Modificar Profesor</h1>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="nombre_completo">Nombre Completo</label>
+                    <input type="text" class="form-control" id="nombre_completo" name="nombre_completo" placeholder="Ingrese el Nombre Completo" value="{{ profesor.nombre_completo }}">
+                </div>
+                <div class="form-group">
+                    <label for="certificaciones">Certificaciones</label>
+                    <input type="text" class="form-control" id="certificaciones" placeholder="Ingrese las Certificaciones" name="certificaciones" value="{{ profesor.certificaciones }}">
+                </div>
+                <div class="form-group">
+                    <label for="documento">Documento</label>
+                    <input type="number" class="form-control" id="documento" name="documento" placeholder="Ingrese su Documento" value="{{ profesor.documento }}">
+                </div>
+
+                <button type="submit" class="btn mt-4 btn-primary">Editar</button>
+                <button type="button" onclick="location.href='{% url 'crud_profesores' %}'" class="btn mt-4 btn-secondary">Cancelar</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

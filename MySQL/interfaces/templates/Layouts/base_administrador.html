@@ -14,20 +14,13 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-brand" href="#">
+                        <a class="nav-brand" href="{% url 'crud_admin' %}">
                             {% load static %}
                             <img src="{% static 'Settings.png' %}" width=30 height=30 alt="">
                         </a>
                     </li>
-                    <li class="nav-item dropdown ms-5">
-                        <a class="nav-link dropdown-toggle" href="{% url 'administracion' %}" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Modificar
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{% url 'crud_profesores' %}">Modificar Profesores</a></li>
-                            <li><a class="dropdown-item" href="#">Modificar Materias</a></li>
-                            <li><a class="dropdown-item" href="#">Modificar Clases</a></li>
-                        </ul>
+                    <li class="nav-item ms-4">
+                        <a class="nav-link" href="{% url 'crud_profesores' %}">Profesores</a>
                     </li>
                 </ul>
             </div>
@@ -51,5 +44,31 @@
         {% block content %}
         {% endblock %}
     </div>
+    <script>
+        function filterTable(event) {
+            var filter = event.target.value.toLowerCase();
+            var rows = document.querySelectorAll("#table-body tr");
+
+            rows.forEach(function(row) {
+                var columns = row.querySelectorAll("td");
+                var visible = false;
+
+                columns.forEach(function(column) {
+                    if (column.innerHTML.toLowerCase().indexOf(filter) > -1) {
+                        visible = true;
+                    }
+                });
+
+                if (visible) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+
+        var searchInput = document.querySelector("#search");
+        searchInput.addEventListener("input", filterTable);
+    </script>
 </body>
 </html>

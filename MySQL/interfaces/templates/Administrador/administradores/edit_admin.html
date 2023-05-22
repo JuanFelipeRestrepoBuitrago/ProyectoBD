@@ -1,4 +1,4 @@
-{% extends 'Layouts/edit_administrador.html' %}
+{% extends 'Layouts/base_administrador.html' %}
 
 {% block content %}
     <div class="row justify-content-center">
@@ -20,7 +20,7 @@
                 </div>
 
                 <button type="submit" class="btn mt-4 btn-primary">Editar</button>
-                <button type="submit" onclick="location.href='{% url 'crud_admin' %}'" class="btn mt-4 btn-secondary">Cancelar</button>
+                <button type="button" onclick="location.href='{% url 'crud_admin' %}'" class="btn mt-4 btn-secondary">Cancelar</button>
             </form>
         </div>
     </div>

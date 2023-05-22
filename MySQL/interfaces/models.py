@@ -77,8 +77,8 @@ class Administradores(models.Model):
 
 class MateriasPrerrequisito(models.Model):
     id_prerrequisito = models.AutoField(primary_key=True)
-    id_materia = models.ForeignKey(Materias, models.DO_NOTHING, db_column='id_materia')
-    id_materia_prerrequisito = models.ForeignKey(Materias, models.DO_NOTHING, db_column='id_materia_prerrequisito', related_name='materiasprerrequisito_id_materia_prerrequisito_set')
+    id_materia = models.ForeignKey(Materias, on_delete=models.CASCADE, db_column='id_materia')
+    id_materia_prerrequisito = models.ForeignKey(Materias, on_delete=models.CASCADE, db_column='id_materia_prerrequisito', related_name='materiasprerrequisito_id_materia_prerrequisito_set')
 
     def __str__(self):
         return self.id_materia.nombre_materia + " - " + self.id_materia_prerrequisito.nombre_materia
@@ -91,8 +91,8 @@ class MateriasPrerrequisito(models.Model):
 
 class MateriasAprobadas(models.Model):
     id_materia_aprobada = models.AutoField(primary_key=True)
-    codigo_estudiante = models.ForeignKey(Estudiantes, models.DO_NOTHING, db_column='codigo_estudiante')
-    id_materia = models.ForeignKey(Materias, models.DO_NOTHING, db_column='id_materia')
+    codigo_estudiante = models.ForeignKey(Estudiantes, on_delete=models.CASCADE, db_column='codigo_estudiante')
+    id_materia = models.ForeignKey(Materias, on_delete=models.CASCADE, db_column='id_materia')
 
     class Meta:
         managed = False
@@ -103,10 +103,10 @@ class MateriasAprobadas(models.Model):
 class Clases(models.Model):
     id_clase = models.AutoField(primary_key=True, db_comment='Es el id ·nico con el cual se distinguen las multiples clases, que pueden llegar a haber en la universidad, tanto de otras materias como de la misma.\n')
     tipo_clase = models.CharField(max_length=11, db_comment='Identifica que tipo de actividades se harßn en cada clase, ya sea laboratorio, clase magistral, taller o clase convencional.\n')
-    id_profesor = models.ForeignKey('Profesores', models.DO_NOTHING, db_column='id_profesor', blank=True, null=True, db_comment='Id del profesor asignado a la clase, en caso de este ya estar definido.\n')
-    id_materia = models.ForeignKey('Materias', models.DO_NOTHING, db_column='id_materia', db_comment='Identificador unico de la materia de la cual se dicta la clase.\n')
+    id_profesor = models.ForeignKey('Profesores', on_delete=models.CASCADE, db_column='id_profesor', blank=True, null=True, db_comment='Id del profesor asignado a la clase, en caso de este ya estar definido.\n')
+    id_materia = models.ForeignKey('Materias', on_delete=models.CASCADE, db_column='id_materia', db_comment='Identificador unico de la materia de la cual se dicta la clase.\n')
     horario = models.JSONField(db_comment='Es el horario que tendrß asignada la clase en el dÝa o multiples dÝas que se dicte.\n')
-    id_aula = models.ForeignKey(Aulas, models.DO_NOTHING, db_column='id_aula', blank=True, null=True)
+    id_aula = models.ForeignKey(Aulas, on_delete=models.CASCADE, db_column='id_aula', blank=True, null=True)
 
     def __str__(self):
         return self.id_materia.nombre_materia + " - " + str(self.id_clase)
@@ -118,10 +118,10 @@ class Clases(models.Model):
 
 class Registros(models.Model):
     id_registro = models.AutoField(primary_key=True)
-    codigo_estudiante = models.ForeignKey(Estudiantes, models.DO_NOTHING, db_column='codigo_estudiante', db_comment='Codigo del estudiante que realiza el registro.\n')
-    id_clase = models.ForeignKey(Clases, models.DO_NOTHING, db_column='id_clase', db_comment='Identifica la clase registrada por el estudiante.\n')
+    codigo_estudiante = models.ForeignKey(Estudiantes, on_delete=models.CASCADE, db_column='codigo_estudiante', db_comment='Codigo del estudiante que realiza el registro.\n')
+    id_clase = models.ForeignKey(Clases, on_delete=models.CASCADE, db_column='id_clase', db_comment='Identifica la clase registrada por el estudiante.\n')
     fecha_registro = models.DateField(auto_now_add=True, db_comment='Identifica el la fecha en la cual se llevo a cabo el registro.\n')
-    id_factura = models.ForeignKey(Facturas, models.DO_NOTHING, db_column='id_factura', db_comment='Identificador ·nico de la factura asociada a la transacci¾n.\n')
+    id_factura = models.ForeignKey(Facturas, on_delete=models.CASCADE, db_column='id_factura', db_comment='Identificador ·nico de la factura asociada a la transacci¾n.\n')
 
     class Meta:
         managed = False

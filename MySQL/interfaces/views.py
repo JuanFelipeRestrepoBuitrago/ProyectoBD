@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Estudiantes, Clases, Facturas, Registros
+from .models import Estudiantes, Clases, Facturas, Registros, Profesores
 from django.http import HttpResponse
 from datetime import datetime
 from django.db import transaction, IntegrityError
@@ -53,7 +53,6 @@ def login(request):
         return render(request, 'Principales/iniciar_sesion.html', {
             'title': 'Iniciar Sesión',
         })
-
 
 @transaction.atomic
 def home_estudiante(request, documento):
@@ -165,3 +164,37 @@ def facturas_estudiante(request, documento):
 
         messages.success(request, 'Factura modificada con éxito')
         return redirect('facturas_estudiante', documento=estudiante.documento_identidad)
+@transaction.atomic
+def administracion(request):
+    estudiantes = Estudiantes.objects.all()
+    if request.method == "POST":
+        codigo_estudiante = request.POST.get('codigo_estudiante')
+        estudiante = Estudiantes.objects.get(codigo_estudiante=codigo_estudiante)
+        estudiante.delete()
+        return redirect('administracion')
+    if request.method == 'PUT':
+        return redirect('cu_estudiantes')
+    return render(request, 'Administrador/crud_estudiantes.html', {'estudiantes': estudiantes, 'tittle': 'Admin'})
+
+def crud_profesores(request):
+    if request.method == "POST":
+        if 'id_profesor' in request.POST:
+            codigo_profesor = request.POST.get('id_profesor')
+            profesor = Profesores.objects.get(id_profesor=codigo_profesor)
+            profesor.delete()
+        else:
+            documento = request.POST.get('documento')
+            certificaciones = request.POST.get('certificaciones')
+            nombre = request.POST.get('nombre_completo')
+            try:
+                Profesores.objects.get(documento=documento)
+                messages.error(request, "El profesor ya existe")
+                return redirect('crud_profesores')
+            except Profesores.DoesNotExist:
+                profesor = Profesores.objects.create(documento=documento, certificaciones=certificaciones, nombre_completo=nombre)
+                profesor.save()
+                messages.success(request, "El profesor se guardó correctamente")
+                return redirect('crud_profesores')
+
+    profesores = Profesores.objects.all()
+    return render(request, 'Administrador/crud_profesores.html', {'profesores': profesores, 'tittle': 'Admin'})

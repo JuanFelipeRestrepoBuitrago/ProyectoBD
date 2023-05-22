@@ -1,0 +1,92 @@
+{% extends 'Layouts/base_administrador.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <h2>Profesores</h2>
+        <p class="mt-3"></p>
+        <div class="table-responsive">
+            <input type="text" id="search" class="form-control" placeholder="Buscar">
+            <p class="mt-3"></p>
+            <table class="table table-striped" id="table-body">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Certificaciones</th>
+                        <th>Documento</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for profesor in profesores %}
+                    <tr>
+                        <td>{{ profesor.id_profesor }}</td>
+                        <td>{{ profesor.nombre_completo }}</td>
+                        <td>{{ profesor.certificaciones }}</td>
+                        <td>{{ profesor.documento }}</td>
+                        <td>
+                            <form method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="id_profesor" value="{{ profesor.id_profesor }}">
+                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col">
+        <h2>Crear Profesor</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="nombre">Nombre completo:</label>
+                <input type="text" class="form-control" id="nombre" name="nombre_completo" required>
+            </div>
+            <div class="form-group">
+                <label for="certificaciones">Certificaciones:</label>
+                <input type="text" class="form-control" id="certificaciones" name="certificaciones">
+            </div>
+            <div class="form-group">
+                <label for="documento">Documento:</label>
+                <input type="text" class="form-control" id="documento" name="documento" required>
+            </div>
+            <p class="mt-5"></p>
+            <button type="submit" class="btn btn-primary">Crear</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function filterTable(event) {
+        var filter = event.target.value.toLowerCase();
+        var rows = document.querySelectorAll("#table-body tr");
+
+        rows.forEach(function(row) {
+            var columns = row.querySelectorAll("td");
+            var visible = false;
+
+            columns.forEach(function(column) {
+                if (column.innerHTML.toLowerCase().indexOf(filter) > -1) {
+                    visible = true;
+                }
+            });
+
+            if (visible) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    }
+
+    var searchInput = document.querySelector("#search");
+    searchInput.addEventListener("input", filterTable);
+</script>
+{% endblock %}

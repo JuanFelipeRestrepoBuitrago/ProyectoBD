@@ -42,16 +42,7 @@
             {% if messages %}
                 <ul class="messages">
                     {% for message in messages %}
-                        <div class="alert alert-dismissible alert-
-                            {% if message.tags == 'error' %}
-                                danger
-                            {% elif message.tags == 'success' %}
-                                success
-                            {% elif message.tags == 'warning' %}
-                                warning
-                            {% elif message.tags == 'info' %}
-                                info
-                            {% endif %}">
+                        <div class="alert alert-dismissible alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}">
                             <strong class="text-dark">{{ message }}</strong>
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>

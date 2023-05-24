@@ -45,11 +45,19 @@ def login(request):
             if estudiante.contraseña == contraseña:
                 return redirect('principal_estudiante', documento=usuario)
             else:
-                messages.error(request, "Error verificacion")
+                messages.error(request, "Error verificación")
                 return redirect('iniciar_sesion')
         except (Estudiantes.DoesNotExist, ValueError):
-            messages.info(request, "No existe usuario")
-            return redirect('iniciar_sesion')
+            try:
+                administrador = Administradores.objects.get(usuario=usuario)
+                if administrador.contraseña == contraseña:
+                    return redirect('crud_admin')
+                else:
+                    messages.error(request, "Error de verificación")
+                    return redirect('iniciar_sesion')
+            except (Administradores.DoesNotExist, ValueError):
+                messages.error(request, "Usuario no existente")
+                return redirect('iniciar_sesion')
     else:
         return render(request, 'Principales/iniciar_sesion.html', {
             'title': 'Iniciar Sesión',
@@ -247,11 +255,16 @@ def create_admin(request):
         return redirect('crud_admin')
     else:
         try:
+            if Estudiantes.objects.filter(documento_identidad=usuario).exists():
+                raise Estudiantes.DoesNotExist
             Administradores.objects.create(usuario=usuario, contraseña=contraseña)
             messages.success(request, 'Administrador creado con éxito')
             return redirect('crud_admin')
         except IntegrityError:
             messages.info(request, 'El usuario ya existe')
+            return redirect('crud_admin')
+        except Estudiantes.DoesNotExist:
+            messages.info(request, 'Un usuario estudiante con ese nombre de usuario ya existe')
             return redirect('crud_admin')
 
 

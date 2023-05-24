@@ -178,7 +178,7 @@ def administracion(request):
         return redirect('administracion')
     if request.method == 'PUT':
         return redirect('cu_estudiantes')
-    return render(request, 'Administrador/crud_estudiantes.html', {'estudiantes': estudiantes, 'tittle': 'Admin'})
+    return render(request, 'Administrador/solo_lectura/crud_estudiantes.html', {'estudiantes': estudiantes, 'tittle': 'Admin'})
 
 
 @transaction.atomic
@@ -564,3 +564,36 @@ def create_aulas(request):
     except IntegrityError:
         messages.info(request, 'El aula ya existe')
         return redirect('crud_aulas')
+
+
+@transaction.atomic
+def crud_clases(request):
+    clases = Clases.objects.all()
+
+    if request.method == "GET":
+        return render(request, 'Administrador/clases/crud_clases.html', {
+                      'clases': clases,
+                      'tittle': 'Clases',
+                      'tipos_clases': ("Clase", 'Laboratorio', 'Magistral', 'Taller'),
+                      })
+    else:
+        id_clase = request.POST['id_clase']
+        clase = Clases.objects.get(id_clase=id_clase)
+        clase.delete()
+        messages.success(request, 'Clase eliminada con éxito')
+        return redirect('crud_clases')
+
+
+@transaction.atomic
+def edit_clases(request, clase):
+    clase = Clases.objects.get(id_clase=clase)
+    if request.method == "GET":
+        return render(request, 'Administrador/clases/edit_clases.html', {
+            'clase': clase,
+            'tittle': 'Editar Clase',
+            'tipos_clases': ("Clase", 'Laboratorio', 'Magistral', 'Taller'),
+        })
+    else:
+        tipo_clase = request.POST['tipo_clase']
+
+

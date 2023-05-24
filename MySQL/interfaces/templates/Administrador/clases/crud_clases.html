@@ -1,10 +1,122 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'Layouts/base_administrador.html' %}
 
-</body>
-</html>
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" action="{% url 'create_clase' %}">
+                        <h2>Crear Clase</h2>
+                        {% csrf_token %}
+                        <div class="form-group mt-2">
+                            <label for="tipo_clase">Tipo de Clase</label>
+                            <select class="form-select" name="tipo_clase" id="tipo_clase" required>
+                                <option selected disabled value="">Seleccione el tipo de aula...</option>
+                                {% for tipo_clase in tipos_clases %}
+                                    <option value="{{tipo_clase}}">{{tipo_clase}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="profesor" class="form-label">Profesor</label>
+                            <input class="form-control" list="profesoresDataList" name="profesor" id="profesor" placeholder="Escriba para Buscar Profesor..." value="">
+                            <datalist id="profesoresDataList">
+                                {% for profesor in profesores %}
+                                    <option value="{{profesor.id_profesor}}">{{ profesor.nombre_completo }}-{{ profesor.documento }}</option>
+                                {% endfor %}
+                            </datalist>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="materia" class="form-label">Materia</label>
+                            <input class="form-control" list="materiasDataList" name="materia" id="materia" placeholder="Escriba para Buscar Materia..." required>
+                            <datalist id="materiasDataList">
+                                {% for materia in materias %}
+                                    <option value="{{ materia.id_materia }}">{{ materia.nombre_materia }}
+                                {% endfor %}
+                            </datalist>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="horario">Horario</label>
+                            <textarea class="form-control" placeholder="Ingrese el Horario" id="horario" name="horario" style="height: 100px" required> {"Año": ,
+"Semestre": ,
+"Horarios": [
+{"Dia": "", "Hora": "", "Duracion":""},
+{"Dia": "", "Hora": "", "Duracion":""}
+]}
+                            </textarea>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="aula" class="form-label">Aula</label>
+                            <input class="form-control" list="aulasDataList" name="aula" id="aula" placeholder="Escriba para Buscar Aula..." value="">
+                            <datalist id="aulasDataList">
+                                {% for aula in aulas %}
+                                    <option value="{{aula.id_aula}}">{{ aula.numero_bloque }}-{{ aula.numero_aula }}</option>
+                                {% endfor %}
+                            </datalist>
+                        </div>
+
+                        <button type="submit" class="btn mt-4 btn-success">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-9 col-xl-9">
+            <h2>Clases</h2>
+            <p class="mt-3"></p>
+            <div class="table-responsive">
+                <input type="text" id="search" class="form-control" placeholder="Buscar">
+                <p class="mt-3"></p>
+                <table class="table table-stripe" id="table-body">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tipo de Clase</th>
+                            <th>Profesor</th>
+                            <th>Materia</th>
+                            <th>Horario</th>
+                            <th>Aula</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for clase in clases %}
+                            <tr>
+                                <td>{{ clase.id_clase }}</td>
+                                <td>{{ clase.tipo_clase }}</td>
+                                {% if clase.id_profesor is None %}
+                                    <td>Sin definir</td>
+                                {% else %}
+                                    <td>{{ clase.id_profesor.nombre_completo }}-{{ clase.id_profesor.documento }}</td>
+                                {% endif %}
+                                <td>{{ clase.id_materia.nombre_materia }}</td>
+                                <td>{{ clase.horario }}</td>
+                                {% if clase.id_aula is None %}
+                                    <td>Sin definir</td>
+                                {% else %}
+                                    <td>{{ clase.id_aula.numero_bloque }}-{{ clase.id_aula.numero_aula }}</td>
+                                {% endif %}
+                                <td>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <form method="GET" action="{% url 'edit_clase' clase.id_clase %}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn btn-secondary btn-sm ms-3">✎</button>
+                                            </form>
+                                        </div>
+                                        <div class="col-1">
+                                            <form method="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="id_clase" value="{{ clase.id_clase }}">
+                                                <button type="submit" class="btn btn btn-secondary btn-sm ms-3">🗑</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

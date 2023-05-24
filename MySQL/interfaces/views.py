@@ -160,7 +160,6 @@ def facturas_estudiante(request, documento):
     else:
         factura = request.POST['id_factura']
         pagado = request.POST['pagado']
-        print(pagado)
         factura = facturas.get(id_factura=factura)
         factura.pagado = pagado
         factura.save()

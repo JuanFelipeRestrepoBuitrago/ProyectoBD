@@ -7,6 +7,8 @@ urlpatterns = [
     path('cambiar_contraseña/', cambiar_constraseña, name='cambiar_contraseña'),
 
     path('administracion/estudiantes/', view_estudiantes, name='view_estudiantes'),
+    path('administracion/registros/', view_registros, name='view_registros'),
+    path('administracion/facturas/', view_facturas, name='view_facturas'),
 
 
     path('administracion/administradores/', crud_admin, name="crud_admin"),

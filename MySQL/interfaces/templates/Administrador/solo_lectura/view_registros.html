@@ -1,10 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'Layouts/base_administrador.html' %}
 
-</body>
-</html>
+{% block content %}
+<div class="row">
+    <div class="col">
+        <h2>Registros</h2>
+        <p class="mt-3"></p>
+        <div class="table-responsive">
+            <input type="text" id="search" class="form-control" placeholder="Buscar">
+            <p class="mt-3"></p>
+            <table class="table table-striped" id="table-body">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Estudiante</th>
+                        <th>Clase</th>
+                        <th>Fecha de Registro</th>
+                        <th>Factura</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for registro in registros %}
+                    <tr>
+                        <td>{{ registro.id_registro }}</td>
+                        <td>{{ registro.codigo_estudiante.nombre_completo }}-{{ registro.codigo_estudiante.documento_identidad }}</td>
+                        <td>{{ registro.id_clase.id_materia.nombre_materia }}-{{ registro.id_clase_id }}</td>
+                        <td>{{ registro.fecha_registro }}</td>
+                        <td>{{ registro.id_factura_id }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function filterTable(event) {
+        var filter = event.target.value.toLowerCase();
+        var rows = document.querySelectorAll("#table-body tr");
+
+        rows.forEach(function(row) {
+            var columns = row.querySelectorAll("td");
+            var visible = false;
+
+            columns.forEach(function(column) {
+                if (column.innerHTML.toLowerCase().indexOf(filter) > -1) {
+                    visible = true;
+                }
+            });
+
+            if (visible) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    }
+
+    var searchInput = document.querySelector("#search");
+    searchInput.addEventListener("input", filterTable);
+</script>
+{% endblock %}

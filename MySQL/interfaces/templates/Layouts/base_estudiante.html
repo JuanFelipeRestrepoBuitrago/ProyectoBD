@@ -32,6 +32,11 @@
                         <a class="nav-link" href="{% url 'facturas_estudiante' estudiante.documento_identidad %}">Facturas</a>
                     </li>
                 </ul>
+                <div class="d-flex justify-content-end align-items-center">
+                    <a class="nav-brand me-4" href="{% url 'iniciar_sesion' %}">
+                        <img src="{% static 'Logout.png' %}" width=30 height=30 alt="">
+                    </a>
+                </div>
             </div>
         </div>
     </nav>

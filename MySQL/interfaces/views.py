@@ -182,7 +182,7 @@ def view_estudiantes(request):
 
     return render(request, 'Administrador/solo_lectura/view_estudiantes.html', {
         'estudiantes': estudiantes,
-        'tittle': 'Ver Estudiantes'
+        'tittle': 'Ver Estudiantes',
     })
 
 

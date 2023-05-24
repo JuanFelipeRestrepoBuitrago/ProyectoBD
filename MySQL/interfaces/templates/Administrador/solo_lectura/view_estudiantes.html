@@ -15,7 +15,6 @@
                         <th>Nombre</th>
                         <th>Programa</th>
                         <th>Documento</th>
-                        <th>Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,13 +24,6 @@
                         <td>{{ estudiante.nombre_completo }}</td>
                         <td>{{ estudiante.programa_academico }}</td>
                         <td>{{ estudiante.documento_identidad }}</td>
-                        <td>
-                            <form method="POST">
-                                {% csrf_token %}
-                                <input type="hidden" name="codigo_estudiante" value="{{estudiante.codigo_estudiante}}">
-                                <button type="submit" class="btn btn-danger">Eliminar</button>
-                            </form>
-                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>

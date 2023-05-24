@@ -1,10 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'Layouts/base_administrador.html' %}
 
-</body>
-</html>
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-5">
+            <h1 class="text-start mt-3">Modificar Clase</h1>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group mt-2">
+                    <label for="id_clase">ID</label>
+                    <input type="number" class="form-control" id="id_clase" name="id_clase" value="{{ clase.id_clase }}" readonly>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="tipo_clase">Tipo de Clase</label>
+                    <select class="form-select" name="tipo_clase" id="tipo_clase" required>
+                        <option value="" disabled>Seleccione el tipo de aula...</option>
+                        {% for tipo_clase in tipos_clases %}
+                            {% if tipo_clase == clase.tipo_clase %}
+                                <option selected value="{{ tipo_clase }}">{{ tipo_clase }}</option>
+                            {% else %}
+                                <option value="{{ tipo_clase }}">{{ tipo_clase }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="profesor" class="form-label">Profesor</label>
+                    <input class="form-control" list="profesoresDataList" name="profesor" id="profesor" placeholder="Escriba para Buscar Profesor..." value="{% if clase.id_profesor is not None %}{{ clase.id_profesor_id }}{% endif %}">
+                    <datalist id="profesoresDataList">
+                        {% for profesor in profesores %}
+                            <option value="{{profesor.id_profesor}}">{{ profesor.nombre_completo }}-{{ profesor.documento }}</option>
+                        {% endfor %}
+                    </datalist>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="materia" class="form-label">Materia</label>
+                    <input class="form-control" list="materiasDataList" name="materia" id="materia" placeholder="Escriba para Buscar Materia..." value="{{ clase.id_materia_id }}" required>
+                    <datalist id="materiasDataList">
+                        {% for materia in materias %}
+                            <option value="{{ materia.id_materia }}">{{ materia.nombre_materia }}
+                        {% endfor %}
+                    </datalist>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="horario">Horario</label>
+                    <textarea class="form-control" placeholder="Ingrese el Horario" id="horario" name="horario" style="height: 100px" required>{{ clase.horario }}</textarea>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="aula" class="form-label">Aula</label>
+                    <input class="form-control" list="aulasDataList" name="aula" id="aula" placeholder="Escriba para Buscar Aula..." value="{% if clase.id_aula is not None %}{{ clase.id_aula_id }}{% endif %}">
+                    <datalist id="aulasDataList">
+                        {% for aula in aulas %}
+                            <option value="{{aula.id_aula}}">{{ aula.numero_bloque }}-{{ aula.numero_aula }}</option>
+                        {% endfor %}
+                    </datalist>
+                </div>
+
+                <button type="submit" class="btn mt-4 btn-primary">Editar</button>
+                <button type="button" onclick="location.href='{% url 'crud_clases' %}'" class="btn mt-4 btn-secondary">Cancelar</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

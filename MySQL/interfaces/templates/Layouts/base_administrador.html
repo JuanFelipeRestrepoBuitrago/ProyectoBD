@@ -14,7 +14,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-brand" href="{% url 'crud_admin' %}">
+                        <a class="nav-brand ms-4" href="{% url 'crud_admin' %}">
                             {% load static %}
                             <img src="{% static 'Settings.png' %}" width=30 height=30 alt="">
                         </a>
@@ -25,7 +25,10 @@
                     <li class="nav-item ms-4">
                         <a class="nav-link" href="{% url 'crud_aulas' %}">Aulas</a>
                     </li>
-                    <li class="nav-item dropdown ms-5">
+                    <li class="nav-item ms-4">
+                        <a class="nav-link" href="{% url 'crud_clases' %}">Clases</a>
+                    </li>
+                    <li class="nav-item dropdown ms-4">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Materias
                         </a>
@@ -35,7 +38,22 @@
                             <li class="nav-item ms-4"><a class="nav-link" href="{% url 'crud_aprobadas' %}">Aprobadas</a></li>
                         </ul>
                     </li>
+                    <li class="nav-item dropdown ms-4">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Lectura Otros
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDropdown">
+                            <li class="nav-item ms-4"><a class="nav-link" href="{% url 'view_estudiantes' %}">Estudiantes</a></li>
+                            <li class="nav-item ms-4"><a class="nav-link" href="{% url 'view_registros' %}">Registros</a></li>
+                            <li class="nav-item ms-4"><a class="nav-link" href="{% url 'view_facturas' %}">Facturas</a></li>
+                        </ul>
+                    </li>
                 </ul>
+                <div class="d-flex justify-content-end align-items-center">
+                    <a class="nav-brand me-4" href="{% url 'iniciar_sesion' %}">
+                        <img src="{% static 'Logout.png' %}" width=30 height=30 alt="">
+                    </a>
+                </div>
             </div>
         </div>
     </nav>

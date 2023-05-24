@@ -1,5 +1,3 @@
-from datetime import timedelta, datetime
-
 from django.db import models
 
 

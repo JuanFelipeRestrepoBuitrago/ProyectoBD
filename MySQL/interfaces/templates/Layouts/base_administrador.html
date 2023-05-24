@@ -38,6 +38,17 @@
                             <li class="nav-item ms-4"><a class="nav-link" href="{% url 'crud_aprobadas' %}">Aprobadas</a></li>
                         </ul>
                     </li>
+                    <li class="nav-item dropdown ms-5">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Lectura Otros
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDropdown">
+{#                            Todo Modificar las url de estas vueltas#}
+                            <li class="nav-item ms-4"><a class="nav-link" href="{% url 'view_estudiantes' %}">Estudiantes</a></li>
+                            <li class="nav-item ms-4"><a class="nav-link" href="{% url 'crud_prerrequisitos' %}">Registros</a></li>
+                            <li class="nav-item ms-4"><a class="nav-link" href="{% url 'crud_aprobadas' %}">Facturas</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>

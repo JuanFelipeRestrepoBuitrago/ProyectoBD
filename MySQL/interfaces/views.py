@@ -170,17 +170,33 @@ def facturas_estudiante(request, documento):
 
 
 @transaction.atomic
-def administracion(request):
+def view_estudiantes(request):
     estudiantes = Estudiantes.objects.all()
-    if request.method == "POST":
-        codigo_estudiante = request.POST.get('codigo_estudiante')
-        estudiante = Estudiantes.objects.get(codigo_estudiante=codigo_estudiante)
-        estudiante.delete()
-        return redirect('administracion')
-    if request.method == 'PUT':
-        return redirect('cu_estudiantes')
-    return render(request, 'Administrador/solo_lectura/crud_estudiantes.html',
-                  {'estudiantes': estudiantes, 'tittle': 'Admin'})
+
+    return render(request, 'Administrador/solo_lectura/view_estudiantes.html', {
+        'estudiantes': estudiantes,
+        'tittle': 'Ver Estudiantes'
+    })
+
+
+@transaction.atomic
+def view_registros(request):
+    registros = Registros.objects.all()
+
+    return render(request, 'Administrador/solo_lectura/view_registros.html', {
+        'registros': registros,
+        'tittle': 'Ver Registros'
+    })
+
+
+@transaction.atomic
+def view_facturas(request):
+    facturas = Facturas.objects.all()
+
+    return render(request, 'Administrador/solo_lectura/view_facturas.html', {
+        'facturas': facturas,
+        'tittle': 'Ver Facturas'
+    })
 
 
 @transaction.atomic

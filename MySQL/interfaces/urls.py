@@ -6,7 +6,9 @@ urlpatterns = [
     path('registrar/', registro_estudiante, name='registro_estudiante'),
     path('cambiar_contraseña/', cambiar_constraseña, name='cambiar_contraseña'),
 
-    path('administracion/', administracion, name='administracion'),
+    path('administracion/estudiantes/', view_estudiantes, name='view_estudiantes'),
+
+
     path('administracion/administradores/', crud_admin, name="crud_admin"),
     path('administracion/administradores/editar/<str:admin>', edit_admin, name="edit_admin"),
     path('administracion/administradores/crear', create_admin, name="create_admin"),

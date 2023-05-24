@@ -26,6 +26,9 @@ urlpatterns = [
     path('administracion/aulas/', crud_aulas, name="crud_aulas"),
     path('administracion/aulas/editar/<int:aula>', edit_aulas, name="edit_aula"),
     path('administracion/aulas/crear', create_aulas, name="create_aula"),
+    path('administracion/clases/', crud_clases, name="crud_clases"),
+    path('administracion/clases/editar/<int:clase>', edit_clases, name="edit_clase"),
+    path('administracion/clases/crear', create_clases, name="create_clase"),
 
     path('estudiante/<int:documento>', home_estudiante, name='principal_estudiante'),
     path('estudiante/<int:documento>/clases', get_clases, name='clases_estudiante'),

@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from datetime import datetime
 from django.db import transaction, IntegrityError
 from django.contrib import messages
+import re
 
 
 @transaction.atomic
@@ -178,7 +179,8 @@ def administracion(request):
         return redirect('administracion')
     if request.method == 'PUT':
         return redirect('cu_estudiantes')
-    return render(request, 'Administrador/solo_lectura/crud_estudiantes.html', {'estudiantes': estudiantes, 'tittle': 'Admin'})
+    return render(request, 'Administrador/solo_lectura/crud_estudiantes.html',
+                  {'estudiantes': estudiantes, 'tittle': 'Admin'})
 
 
 @transaction.atomic
@@ -569,13 +571,19 @@ def create_aulas(request):
 @transaction.atomic
 def crud_clases(request):
     clases = Clases.objects.all()
+    profesores = Profesores.objects.all()
+    materias = Materias.objects.all()
+    aulas = Aulas.objects.all()
 
     if request.method == "GET":
         return render(request, 'Administrador/clases/crud_clases.html', {
-                      'clases': clases,
-                      'tittle': 'Clases',
-                      'tipos_clases': ("Clase", 'Laboratorio', 'Magistral', 'Taller'),
-                      })
+            'clases': clases,
+            'tittle': 'Clases',
+            'tipos_clases': ("Clase", 'Laboratorio', 'Magistral', 'Taller'),
+            'profesores': profesores,
+            'materias': materias,
+            'aulas': aulas,
+        })
     else:
         id_clase = request.POST['id_clase']
         clase = Clases.objects.get(id_clase=id_clase)
@@ -586,14 +594,130 @@ def crud_clases(request):
 
 @transaction.atomic
 def edit_clases(request, clase):
+    pattern_number = re.compile(r'^[0-9]+$')
+
     clase = Clases.objects.get(id_clase=clase)
+    profesores = Profesores.objects.all()
+    materias = Materias.objects.all()
+    aulas = Aulas.objects.all()
+
     if request.method == "GET":
         return render(request, 'Administrador/clases/edit_clases.html', {
             'clase': clase,
             'tittle': 'Editar Clase',
             'tipos_clases': ("Clase", 'Laboratorio', 'Magistral', 'Taller'),
+            'profesores': profesores,
+            'materias': materias,
+            'aulas': aulas,
         })
     else:
         tipo_clase = request.POST['tipo_clase']
+        try:
+            # profesor
+            if request.POST['profesor'] == '':
+                id_profesor = None
+            else:
+                if pattern_number.match(request.POST['profesor']):
+                    id_profesor = Profesores.objects.get(id_profesor=request.POST['profesor']).id_profesor
+                else:
+                    messages.error(request, 'El profesor debe ser el id, no el nombre o documento')
+                    return redirect('edit_clase', clase=clase.id_clase)
+
+            # materia
+            if pattern_number.match(request.POST['materia']):
+                id_materia = Materias.objects.get(id_materia=request.POST['materia']).id_materia
+            else:
+                messages.error(request, 'La materia debe ser el id, no el nombre')
+                return redirect('edit_clase', clase=clase.id_clase)
+
+            # horario
+            horario = request.POST['horario']
+
+            # aula
+            if request.POST['aula'] == '':
+                id_aula = None
+            else:
+                if pattern_number.match(request.POST['aula']):
+                    id_aula = Aulas.objects.get(id_aula=request.POST['aula']).id_aula
+                else:
+                    messages.error(request, 'El aula debe ser el id, no el bloque y número de aula')
+                    return redirect('edit_clase', clase=clase.id_clase)
+        except Profesores.DoesNotExist:
+            messages.info(request, 'El profesor no existe')
+            return redirect('edit_clase', clase=clase.id_clase)
+        except Materias.DoesNotExist:
+            messages.info(request, 'La materia no existe')
+            return redirect('edit_clase', clase=clase.id_clase)
+        except Aulas.DoesNotExist:
+            messages.info(request, 'El aula no existe')
+            return redirect('edit_clase', clase=clase.id_clase)
+
+        try:
+            clase.tipo_clase = tipo_clase
+            clase.id_profesor_id = id_profesor
+            clase.id_materia_id = id_materia
+            clase.horario = horario
+            clase.id_aula_id = id_aula
+            clase.save()
+            messages.success(request, 'Clase editada con éxito')
+            return redirect('crud_clases')
+        except Clases.DoesNotExist:
+            messages.info(request, 'La clase no existe')
+            return redirect('edit_clase', clase=clase.id_clase)
 
 
+@transaction.atomic
+def create_clases(request):
+    pattern_number = re.compile(r'^[0-9]+$')
+    tipo_clase = request.POST['tipo_clase']
+    try:
+        # profesor
+        if request.POST['profesor'] == '':
+            id_profesor = None
+        else:
+            if pattern_number.match(request.POST['profesor']):
+                id_profesor = Profesores.objects.get(id_profesor=request.POST['profesor']).id_profesor
+            else:
+                messages.error(request, 'El profesor debe ser el id, no el nombre o documento')
+                return redirect('crud_clases')
+
+        # materia
+        if pattern_number.match(request.POST['materia']):
+            id_materia = Materias.objects.get(id_materia=request.POST['materia']).id_materia
+        else:
+            messages.error(request, 'La materia debe ser el id, no el nombre')
+            return redirect('crud_clases')
+
+        # horario
+        horario = request.POST['horario']
+
+        # aula
+        if request.POST['aula'] == '':
+            id_aula = None
+        else:
+            if pattern_number.match(request.POST['aula']):
+                id_aula = Aulas.objects.get(id_aula=request.POST['aula']).id_aula
+            else:
+                messages.error(request, 'El aula debe ser el id, no el bloque y número de aula')
+                return redirect('crud_clases')
+    except Clases.DoesNotExist:
+        messages.info(request, 'La clase no existe')
+        return redirect('crud_clases')
+    except Profesores.DoesNotExist:
+        messages.info(request, 'El profesor no existe')
+        return redirect('crud_clases')
+    except Materias.DoesNotExist:
+        messages.info(request, 'La materia no existe')
+        return redirect('crud_clases')
+    except Aulas.DoesNotExist:
+        messages.info(request, 'El aula no existe')
+        return redirect('crud_clases')
+
+    try:
+        Clases.objects.create(tipo_clase=tipo_clase, id_profesor_id=id_profesor, id_materia_id=id_materia,
+                              horario=horario, id_aula_id=id_aula)
+        messages.success(request, 'Clase creada con éxito')
+        return redirect('crud_clases')
+    except IntegrityError:
+        messages.info(request, 'La clase ya existe')
+        return redirect('crud_clases')

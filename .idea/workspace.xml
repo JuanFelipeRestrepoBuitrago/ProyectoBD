@@ -6,11 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b4f09b0f-a334-44dd-a110-8575fb36f8d8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MongoDB.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/MongoDB/MongoDB/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/MongoDB/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MongoDB/interfaces/templates/Layouts/base_estudiante.html" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/interfaces/templates/Layouts/base_estudiante.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MongoDB/interfaces/templates/Principales/iniciar_sesion.html" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/interfaces/templates/Principales/iniciar_sesion.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MongoDB/interfaces/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/interfaces/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MongoDB/interfaces/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/interfaces/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -73,7 +69,7 @@
       <workItem from="1684951063348" duration="4543000" />
       <workItem from="1684962000444" duration="12538000" />
       <workItem from="1684975666557" duration="9000" />
-      <workItem from="1684976698334" duration="6999000" />
+      <workItem from="1684976698334" duration="8516000" />
     </task>
     <servers />
   </component>

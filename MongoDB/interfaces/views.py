@@ -23,7 +23,7 @@ def login(request):
             estudiante = Estudiantes.objects.get(documento_identidad=nombre)
             if estudiante.contraseña == contraseña:
                 messages.error(request, "Verificación correcta")
-                return redirect('iniciar_sesion')
+                return redirect('principal_estudiante',documento=nombre)
             else:
                 messages.error(request, "Error verificacion")
                 return redirect('iniciar_sesion')
@@ -62,4 +62,53 @@ def registro_estudiante(request):
             except IntegrityError:
                 messages.error(request, 'El usuario con ese documento ya existe')
                 return redirect('registro_estudiante')
+            except:
+                messages.error(request, 'Error de registro')
+                return redirect('registro_estudiante')
 
+#Cambiar contraseña
+def cambiar_constraseña(request):
+    if request.method == 'GET':
+        return render(request, 'Principales/contraseña.html', {
+            'title': 'Cambiar Contraseña',
+        })
+    else:
+        documento = request.POST['documento']
+        contraseña = request.POST['contraseña']
+        contraseña_c = request.POST['contraseña_confirmación']
+
+        try:
+            estudiante = Estudiantes.objects.get(documento_identidad=documento)
+            if contraseña != contraseña_c:
+                messages.error(request, 'Las contraseñas no coinciden')
+                return redirect('cambiar_contraseña')
+            else:
+                estudiante.contraseña = contraseña
+                estudiante.save()
+                messages.success(request, 'Contraseña modificada con éxito')
+                return redirect('iniciar_sesion')
+        except Estudiantes.DoesNotExist:
+            messages.info(request, 'Usuario no existente')
+            return redirect('iniciar_sesion')
+
+
+#Pagina de inicio para estudiante
+def home_estudiante(request, documento):
+    estudiante = Estudiantes.objects.select_for_update().get(documento_identidad=documento)
+    if request.method == 'GET':
+        return render(request, 'Estudiantes/estudiante.html', {
+            'estudiante': estudiante,
+            'title': 'Home',
+        })
+    else:
+        estudiante.nombre_completo = request.POST['nombre_completo']
+        estudiante.documento_identidad = request.POST['documento']
+        estudiante.programa_academico = request.POST['programa_academico']
+        estudiante.save()
+        messages.success(request, 'Datos modificados con éxito')
+        return redirect('principal_estudiante', documento=estudiante.documento_identidad)
+
+#Ver las clases
+def get_clases(request,documento):
+    if request.method == 'GET':
+        

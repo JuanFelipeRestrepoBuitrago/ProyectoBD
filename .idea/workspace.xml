@@ -6,6 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="b4f09b0f-a334-44dd-a110-8575fb36f8d8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MongoDB.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MongoDB/MongoDB/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/MongoDB/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MongoDB/interfaces/templates/Layouts/base_estudiante.html" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/interfaces/templates/Layouts/base_estudiante.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MongoDB/interfaces/templates/Principales/iniciar_sesion.html" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/interfaces/templates/Principales/iniciar_sesion.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MongoDB/interfaces/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/interfaces/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MongoDB/interfaces/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/interfaces/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -29,19 +34,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/valen/OneDrive/Documentos/GitHub/ProyectoBD/MongoDB/interfaces/templates/static",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\valen\OneDrive\Documentos\GitHub\ProyectoBD\MongoDB\interfaces\templates\static" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -62,7 +73,7 @@
       <workItem from="1684951063348" duration="4543000" />
       <workItem from="1684962000444" duration="12538000" />
       <workItem from="1684975666557" duration="9000" />
-      <workItem from="1684976698334" duration="162000" />
+      <workItem from="1684976698334" duration="6999000" />
     </task>
     <servers />
   </component>

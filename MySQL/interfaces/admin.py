@@ -1,7 +1,8 @@
 from django.contrib import admin
 from .models import *
 
-# Register your models here.
+# Si se quiere hacer un CRUD de una tabla desde el apartado de administración de Django '/admin'
+# se debe registrar el modelo en este archivo
 admin.site.register(Estudiantes)
 admin.site.register(Clases)
 admin.site.register(Materias)

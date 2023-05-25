@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from .models import *
-from django.http import HttpResponse
 from datetime import datetime
 from django.db import transaction, IntegrityError
 from django.contrib import messages
@@ -9,6 +8,15 @@ import re
 
 @transaction.atomic
 def registro_estudiante(request):
+    """
+    Vista para registrar un estudiante en la base de datos, los datos son recibidos por método POST,
+    se verifica que las contraseñas coincidan y que el documento no exista en la base de datos,
+    si todo sale bien se crea el usuario y se redirige a la página de inicio de sesión, sino se
+    muestra un mensaje de error y se redirige a la página de registro de estudiante.
+
+    :param request: HttpRequest
+    :return: HttpResponse, interfaz de registro de estudiantes
+    """
     if request.method == "GET":
         return render(request, 'Principales/registro_estudiante.html', {
             'title': 'Registrar Estudiante',
@@ -37,6 +45,14 @@ def registro_estudiante(request):
 
 
 def login(request):
+    """
+    Vista para iniciar sesión, los datos son recibidos por método POST, se verifica que el usuario exista
+    primero como estudiante, si no existe se verifica como administrador, sino se muestra un mensaje de error
+    y se redirige a la página de inicio de sesión.
+
+    :param request: HttpRequest
+    :return: HttpResponse, interfaz de inicio de sesión
+    """
     if request.method == 'POST':
         usuario = request.POST.get('usuario')
         contraseña = request.POST.get('contraseña')
@@ -66,6 +82,15 @@ def login(request):
 
 @transaction.atomic
 def home_estudiante(request, documento):
+    """
+    Vista para mostrar la página principal del estudiante, en esta se puede hacer update
+    de los datos del estudiante, cambiar la contraseña y hacer uso del menú de opciones que está
+    en la barra de navegación.
+
+    :param request: HttpRequest
+    :param documento: str, documento del estudiante que está actualmente en sesión
+    :return: HttpResponse, interfaz de la página principal del estudiante
+    """
     estudiante = Estudiantes.objects.select_for_update().get(documento_identidad=documento)
     if request.method == 'GET':
         return render(request, 'Estudiante/estudiante.html', {
@@ -82,6 +107,15 @@ def home_estudiante(request, documento):
 
 
 def cambiar_constraseña(request):
+    """
+    Vista para cambiar la contraseña del estudiante, los datos son recibidos por método POST,
+    se verifica que las contraseñas coincidan, sino se muestra un error en esta página,
+    y que el documento exista en la base de datos, sino se redirige a la página de iniciar sesión
+    con un mensaje de error. Finalmente, si todo está correcto,se redirige a la página de inicio de sesión.
+
+    :param request: HttpRequest
+    :return: HttpResponse, interfaz de cambio de contraseña del estudiante
+    """
     if request.method == 'GET':
         return render(request, 'Principales/contraseña.html', {
             'title': 'Cambiar Contraseña',
@@ -108,6 +142,15 @@ def cambiar_constraseña(request):
 
 @transaction.atomic
 def get_clases(request, documento):
+    """
+    Vista para mostrar las clases que tiene el estudiante. En esta vista se puede ver y eliminar las clases que
+    tiene el estudiante registradas en el sistema. Es decir, se ve y elimina los registros hechos por el estudiante,
+    los cuales están en la tabla Registros.
+
+    :param request: HttpRequest
+    :param documento: str, documento del estudiante que está actualmente en sesión
+    :return: HttpResponse, interfaz de las clases registradas por el estudiante
+    """
     estudiante = Estudiantes.objects.select_for_update().get(documento_identidad=documento)
     registros = estudiante.registros_set.filter(fecha_registro__year=datetime.now().year)
     clases = Clases.objects.filter(id_clase__in=registros.values('id_clase'))
@@ -128,6 +171,15 @@ def get_clases(request, documento):
 
 @transaction.atomic
 def registrar_materias(request, documento):
+    """
+    Vista para que un estudiante pueda registrar clases. En esta vista se puede ver y registrar las clases que
+    aún no ha registrado el estudiante en el sistema. Es decir, se crean los registro hechos por el estudiante,
+    los cuales están en la tabla Registros.
+
+    :param request: HttpRequest
+    :param documento: str, documento del estudiante que está actualmente en sesión
+    :return: HttpResponse, interfaz de las clases que aún no ha registrado el estudiante y que puede registrar
+    """
     estudiante = Estudiantes.objects.select_for_update().get(documento_identidad=documento)
     clases = Clases.objects.exclude(id_clase__in=estudiante.registros_set.values('id_clase'))
     registro = Registros.objects.filter(fecha_registro=datetime.now().date(), codigo_estudiante=estudiante,
@@ -156,6 +208,14 @@ def registrar_materias(request, documento):
 
 @transaction.atomic
 def facturas_estudiante(request, documento):
+    """
+    Vista para que un estudiante pueda ver las facturas que tiene a su nombre. En esta vista se puede ver
+    y solo se puede modificar el estado de la factura, es decir, si está pagada o no.
+
+    :param request: HttpRequest
+    :param documento: str, documento del estudiante que está actualmente en sesión
+    :return: HttpResponse, interfaz de las facturas que tiene el estudiante a su nombre
+    """
     estudiante = Estudiantes.objects.select_for_update().get(documento_identidad=documento)
     registros = estudiante.registros_set
     facturas = Facturas.objects.filter(id_factura__in=registros.values('id_factura'))
@@ -178,6 +238,13 @@ def facturas_estudiante(request, documento):
 
 @transaction.atomic
 def view_estudiantes(request):
+    """
+    Vista para ver todos los estudiantes registrados en el sistema. En esta vista solo se
+    puede visualizar los estudiantes existentes en la base de datos
+
+    :param request: HttpRequest
+    :return: HttpResponse, interfaz de los estudiantes registrados en el sistema
+    """
     estudiantes = Estudiantes.objects.all()
 
     return render(request, 'Administrador/solo_lectura/view_estudiantes.html', {
@@ -188,6 +255,13 @@ def view_estudiantes(request):
 
 @transaction.atomic
 def view_registros(request):
+    """
+    Vista para ver todos los registros de los estudiantes. En esta vista solo se
+    puede visualizar los registros existentes en la base de datos.
+
+    :param request: HttpRequest
+    :return: HttpResponse, interfaz de los registros de los estudiantes
+    """
     registros = Registros.objects.all()
 
     return render(request, 'Administrador/solo_lectura/view_registros.html', {
@@ -198,6 +272,13 @@ def view_registros(request):
 
 @transaction.atomic
 def view_facturas(request):
+    """
+    Vista para ver todas las facturas de los estudiantes. En esta vista solo se
+    puede visualizar las facturas existentes en la base de datos.
+
+    :param request: HttpRequest
+    :return: HttpResponse, interfaz de las facturas de los estudiantes
+    """
     facturas = Facturas.objects.all()
 
     return render(request, 'Administrador/solo_lectura/view_facturas.html', {
@@ -208,6 +289,15 @@ def view_facturas(request):
 
 @transaction.atomic
 def crud_admin(request):
+    """
+    Vista para hacer la crud de la tabla, administradores. En esta vista se puede crear, ver
+    y eliminar administradores. Si se elige un administrador en específico, se redirige a una
+    vista para editar el administrador seleccionado. Para crear un administrador se hace uso
+    de la vista de crear administrador con un método POST.
+
+    :param request: HttpRequest
+    :return: HttpResponse, interfaz para la crud de la tabla, administradores
+    """
     administradores = Administradores.objects.all()
     if request.method == "GET":
         return render(request, 'Administrador/administradores/crud_administrador.html', {
@@ -224,6 +314,14 @@ def crud_admin(request):
 
 @transaction.atomic
 def edit_admin(request, admin):
+    """
+    Vista para editar un administrador en específico. En esta vista se puede editar
+    la contraseña del administrador seleccionado, el usuario solo es visible, más no modificable.
+
+    :param request: HttpRequest
+    :param admin: str, usuario del administrador que se quiere editar
+    :return: HttpResponse, interfaz para editar un administrador
+    """
     admin = Administradores.objects.get(usuario=admin)
 
     if request.method == "GET":
@@ -246,6 +344,14 @@ def edit_admin(request, admin):
 
 @transaction.atomic
 def create_admin(request):
+    """
+    Vista para crear un administrador. En esta vista se puede crear un administrador con un método POST.
+    Se puede crear un administrador con un usuario que no exista en la base de datos, ni siquiera exista como documento
+    de un estudiante.
+
+    :param request: HttpRequest
+    :return: HttpResponse, se redirige a la vista para la crud de la tabla, administradores
+    """
     usuario = request.POST['usuario']
     contraseña = request.POST['contraseña']
     contraseña_c = request.POST['contraseña_confirmación']
@@ -270,6 +376,15 @@ def create_admin(request):
 
 @transaction.atomic
 def crud_profesores(request):
+    """
+    Vista para hacer la crud de la tabla, profesores. En esta vista se puede crear, ver
+    y eliminar profesores. Si se elige un profesor en específico, se redirige a una
+    vista para editar el profesor seleccionado. Para crear un profesor se hace uso
+    de la vista de crear profesor con un método POST.
+
+    :param request: HttpRequest
+    :return: HttpResponse, interfaz para la crud de la tabla, profesores
+    """
     profesores = Profesores.objects.all()
     if request.method == "GET":
         return render(request, 'Administrador/profesores/crud_profesores.html', {
@@ -286,6 +401,14 @@ def crud_profesores(request):
 
 @transaction.atomic
 def edit_profesores(request, profesor):
+    """
+    Vista para editar un profesor en específico. En esta vista se puede editar el nombre completo,
+    las certificaciones y el documento de identidad del profesor seleccionado.
+
+    :param request: HttpRequest
+    :param profesor: int, id del profesor que se quiere editar
+    :return: HttpResponse, interfaz para editar un profesor
+    """
     profesor = Profesores.objects.get(id_profesor=profesor)
 
     if request.method == "GET":
@@ -312,6 +435,14 @@ def edit_profesores(request, profesor):
 
 @transaction.atomic
 def create_profesores(request):
+    """
+    Vista para crear un profesor. En esta vista se puede crear un profesor con un método POST.
+    Se puede crear un profesor con un nombre completo, certificaciones y documento de identidad, el
+    id del profesor se genera automáticamente.
+
+    :param request: HttpRequest
+    :return: HttpResponse, se redirige a la vista para la crud de la tabla, profesores
+    """
     nombre_completo = request.POST['nombre_completo']
     certificaciones = request.POST['certificaciones']
     documento_identidad = request.POST['documento']
@@ -327,6 +458,15 @@ def create_profesores(request):
 
 @transaction.atomic
 def crud_materias(request):
+    """
+    Vista para hacer la crud de la tabla, materias. En esta vista se puede crear, ver
+    y eliminar materias. Si se elige una materia en específico, se redirige a una
+    vista para editar la materia seleccionada. Para crear una materia se hace uso
+    de la vista de crear materia con un método POST.
+
+    :param request: HttpRequest
+    :return: HttpResponse, interfaz para la crud de la tabla, materias
+    """
     materias = Materias.objects.all()
     if request.method == "GET":
         return render(request, 'Administrador/materias/crud_materias.html', {
@@ -343,6 +483,14 @@ def crud_materias(request):
 
 @transaction.atomic
 def edit_materias(request, materia):
+    """
+    Vista para editar una materia en específico. En esta vista se puede editar el nombre y
+    el número de créditos, el id de la materia solo es de lectura, no se puede modificar.
+
+    :param request: HttpRequest
+    :param materia: int, id de la materia que se quiere editar
+    :return: HttpResponse, interfaz para editar una materia
+    """
     materia = Materias.objects.get(id_materia=materia)
 
     if request.method == "GET":
@@ -366,6 +514,14 @@ def edit_materias(request, materia):
 
 @transaction.atomic
 def create_materias(request):
+    """
+    Vista para crear una materia. En esta vista se puede crear una materia con un método POST.
+    Se puede crear una materia, su nombre y número de créditos, el id de la materia se genera
+    automáticamente.
+
+    :param request: HttpRequest
+    :return: HttpResponse, se redirige a la vista para la crud de la tabla, materias
+    """
     nombre_materia = request.POST['nombre']
     numero_creditos = request.POST['creditos']
     try:
@@ -379,6 +535,15 @@ def create_materias(request):
 
 @transaction.atomic
 def crud_materias_prerrequisito(request):
+    """
+    Vista para hacer la crud de la tabla, materias_prerrequisito. En esta vista se puede crear, ver
+    y eliminar materias prerrequisito. Si se elige una materia prerrequisito en específico, se redirige a una
+    vista para editar la materia prerrequisito seleccionada. Para crear una materia prerrequisito se hace uso
+    de la vista de crear materia prerrequisito con un método POST.
+
+    :param request: HttpRequest
+    :return: HttpResponse, interfaz para la crud de la tabla, materias_prerrequisito
+    """
     materias_prerrequisito = MateriasPrerrequisito.objects.all()
     materias = Materias.objects.all()
 
@@ -398,6 +563,14 @@ def crud_materias_prerrequisito(request):
 
 @transaction.atomic
 def edit_materias_prerrequisito(request, prerrequisito):
+    """
+    Vista para editar una materia prerrequisito en específico. En esta vista se puede editar la materia y
+    su prerrequisito, el id de la materia prerrequisito solo es de lectura, no se puede modificar.
+
+    :param request: HttpRequest
+    :param prerrequisito: int, id de la materia prerrequisito que se quiere editar
+    :return: HttpResponse, interfaz para editar una materia prerrequisito
+    """
     materia_prerrequisito = MateriasPrerrequisito.objects.get(id_prerrequisito=prerrequisito)
     materias = Materias.objects.all()
 
@@ -432,6 +605,14 @@ def edit_materias_prerrequisito(request, prerrequisito):
 
 @transaction.atomic
 def create_materias_prerrequisito(request):
+    """
+    Vista para crear una materia prerrequisito. En esta vista se puede crear una materia prerrequisito con un
+    método POST. Se puede crear una materia prerrequisito con una materia y un prerrequisito, el id de la
+    materia prerrequisito se genera automáticamente.
+
+    :param request: HttpRequest
+    :return: HttpResponse, se redirige a la vista para la crud de la tabla, materias_prerrequisito
+    """
     materias = Materias.objects.all()
     nombre_materia = request.POST['materia']
     nombre_prerrequisito = request.POST['prerrequisito']
@@ -455,6 +636,15 @@ def create_materias_prerrequisito(request):
 
 @transaction.atomic
 def crud_materias_aprobadas(request):
+    """
+    Vista para la crud de la tabla, materias_aprobadas. En esta vista se puede crear, ver y
+    eliminar una materia aprobada. Si se elige una materia aprobada en específico, se redirige a
+    la vista para editar esa materia aprobada. Para crear una materia aprobada se redirige a la vista
+    para crear una materia aprobada con un método POST.
+
+    :param request: HttpRequest
+    :return: HttpResponse, interfaz para la crud de la tabla, materias_aprobadas
+    """
     materias_aprobadas = MateriasAprobadas.objects.all()
     materias = Materias.objects.all()
     estudiantes = Estudiantes.objects.all()
@@ -476,6 +666,15 @@ def crud_materias_aprobadas(request):
 
 @transaction.atomic
 def edit_materias_aprobadas(request, aprobada):
+    """
+    Vista para editar una materia aprobada. En esta vista se puede editar una materia aporbada con un
+    método POST. Se puede modificar el estudiante y la materia, el id de la materia aprobada no se puede
+    modificar, solo ver.
+
+    :param request: HttpRequest
+    :param aprobada: int, id de la materia aprobada
+    :return: HttpResponse, interfaz para editar una materia aprobada
+    """
     materia_aprobada = MateriasAprobadas.objects.get(id_materia_aprobada=aprobada)
     materias = Materias.objects.all()
     estudiantes = Estudiantes.objects.all()
@@ -508,6 +707,14 @@ def edit_materias_aprobadas(request, aprobada):
 
 @transaction.atomic
 def create_materias_aprobadas(request):
+    """
+    Vista para crear una materia aprobada. En esta vista se puede crear una materia aprobada con un
+    método POST. Se puede crear una materia aprobada con un estudiante y una materia, el id de la materia
+    aprobada se genera automáticamente.
+
+    :param request: HttpRequest
+    :return: HttpResponse, redirige a la vista para la crud de la tabla, materias_aprobadas
+    """
     nombre_materia = request.POST['materia']
     documento = request.POST['estudiante']
 
@@ -527,6 +734,14 @@ def create_materias_aprobadas(request):
 
 @transaction.atomic
 def crud_aulas(request):
+    """
+    Vista para la crud de la tabla, aulas. En esta vista se puede crear, ver y
+    eliminar un aula. Si se elige una aula en específico, se redirige a la vista para editar esa aula.
+    Para crear un aula se redirige a la vista para crear un aula con un método POST.
+
+    :param request: HttpRequest
+    :return: HttpResponse, interfaz para la crud de la tabla, aulas
+    """
     aulas = Aulas.objects.all()
     if request.method == "GET":
         return render(request, 'Administrador/aulas/crud_aulas.html', {
@@ -544,6 +759,14 @@ def crud_aulas(request):
 
 @transaction.atomic
 def edit_aulas(request, aula):
+    """
+    Vista para editar un aula. En esta vista se puede editar un aula con un método POST. Se puede modificar
+    el número del bloque, el número del aula, la capacidad, la sede y el tipo de aula.
+
+    :param request: HttpRequest
+    :param aula: int, id del aula
+    :return: HttpResponse, interfaz para editar un aula
+    """
     aula = Aulas.objects.get(id_aula=aula)
     if request.method == "GET":
         return render(request, 'Administrador/aulas/edit_aulas.html', {
@@ -577,6 +800,14 @@ def edit_aulas(request, aula):
 
 @transaction.atomic
 def create_aulas(request):
+    """
+    Vista para crear un aula. En esta vista se puede crear un aula con un método POST. Se puede crear
+    el número del bloque, el número del aula, la capacidad, la sede y el tipo de aula. El id del aula
+    se genera automáticamente.
+
+    :param request: HttpRequest
+    :return: HttpResponse, redirige a la vista para la crud de la tabla, aulas
+    """
     numero_bloque = request.POST['numero_bloque']
     numero_aula = request.POST['numero_aula']
     capacidad = request.POST['capacidad']
@@ -598,6 +829,14 @@ def create_aulas(request):
 
 @transaction.atomic
 def crud_clases(request):
+    """
+    Vista para la crud de la tabla, clases. En esta vista se puede crear, ver y
+    eliminar una clase. Si se elige una clase en específico, se redirige a la vista para editar esa clase.
+    Para crear una clase se redirige a la vista para crear una clase con un método POST.
+
+    :param request: HttpRequest
+    :return: HttpResponse, interfaz para la crud de la tabla, clases
+    """
     clases = Clases.objects.all()
     profesores = Profesores.objects.all()
     materias = Materias.objects.all()
@@ -622,6 +861,15 @@ def crud_clases(request):
 
 @transaction.atomic
 def edit_clases(request, clase):
+    """
+    Vista para editar una clase. En esta vista se puede editar una clase con un método POST. Se puede modificar el
+    tipo de cl, el profesor, la materia, el horario y el aula, el id de la clase solamente es visible,
+    más no modificable.
+
+    :param request: HttpRequest
+    :param clase: int, id de la clase a modificar
+    :return: HttpResponse, interfaz para editar una clase
+    """
     pattern_number = re.compile(r'^[0-9]+$')
 
     clase = Clases.objects.get(id_clase=clase)
@@ -696,6 +944,13 @@ def edit_clases(request, clase):
 
 @transaction.atomic
 def create_clases(request):
+    """
+    Vista para crear una clase. En esta vista se puede crear una clase con un método POST. Se puede crear una clase
+    con un tipo de clase, un profesor, una materia, un horario y un aula.
+
+    :param request: HttpRequest
+    :return: HttpResponse, redirige a la interfaz para la crud de la tabla, clases
+    """
     pattern_number = re.compile(r'^[0-9]+$')
     tipo_clase = request.POST['tipo_clase']
     try:

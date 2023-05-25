@@ -26,17 +26,15 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="{% url 'clases_estudiante' estudiante.documento_identidad %}">Ver mis Clases</a></li>
-                            {# <li><a class="dropdown-item" href="{% url 'registrar_materias' estudiante.documento_identidad %}">Registrar Clases</a></li> #}
-                            <li><a class="dropdown-item" href="#">Registrar Clases</a></li>
+                            <li><a class="dropdown-item" href="{% url 'registrar_materias' estudiante.documento_identidad %}">Registrar Clases</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        {# <a class="nav-link" href="{% url 'facturas_estudiante' estudiante.documento_identidad %}">Facturas</a> #}}
-                        <a class="nav-link" href="#">Facturas</a>
+                        <a class="nav-link" href="{% url 'facturas_estudiante' estudiante.documento_identidad %}">Facturas</a>
                     </li>
                 </ul>
                 <div class="d-flex justify-content-end align-items-center">
-                    {# <a class="nav-brand me-4" href="{% url 'iniciar_sesion' %}"> #}
+                    <a class="nav-brand me-4" href="{% url 'iniciar_sesion' %}">
                     <a class="nav-brand me-4" href="#">
                         <img src="{% static 'Logout.png' %}" width=30 height=30 alt="">
                     </a>

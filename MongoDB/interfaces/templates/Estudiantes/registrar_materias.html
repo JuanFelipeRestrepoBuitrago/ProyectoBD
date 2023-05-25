@@ -1,0 +1,54 @@
+{% extends 'Layouts/base_estudiante.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>Clases Registradas</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Materia</th>
+                        <th>Horario</th>
+                        <th>Profesor</th>
+                        <th>Aula</th>
+                        <th>Tipo de Clase</th>
+{#                        <th>Prerrequisitos</th>#}
+                        <th>Añadir</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for clase in clases %}
+                        <tr>
+                            <td>{{ clase.materia }}-{{ clase.id }}</td>
+                            <td>{{clase.horario}}</td>
+                            <td>{{ clase.profesor.nombre_completo }}</td>
+                            {% if clase.aula is None %}
+                                <td>Aula no Asignada</td>
+                            {% else %}
+                                <td>{{clase.aula.numero_bloque}}-{{ clase.aula.numero_aula }}</td>
+                            {% endif %}
+                            <td>{{clase.tipo_clase}}</td>
+                            <td>
+                                {% for materia in clase.id_materia.materiasprerrequisito_set.all %}
+                                    {% if clases %}
+
+                                    {% endif %}
+                                    {{materia.id_materia_prerrequisito.nombre_materia}},
+                                {% endfor %}
+                            </td>
+                            <td>
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="id_clase" value="{{clase.id}}">
+                                    <button type="submit" class="btn btn btn-success">Registrar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

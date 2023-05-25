@@ -38,11 +38,11 @@ def registro_estudiante(request):
                 'title': 'Registrar Estudiante',
             })
         else:
-            documento = request.POST['documento']
-            nombre = request.POST['nombre']
-            programa_academico = request.POST['programa_academico']
-            contraseña = request.POST['contraseña']
-            contraseña_c = request.POST['contraseña_c']
+            documento = request.POST.get('documento')
+            nombre = request.POST.get('nombre')
+            programa_academico = request.POST.get('programa_academico')
+            contraseña = request.POST.get('contraseña')
+            contraseña_c = request.POST.get('contraseña_c')
             try:
                 if contraseña != contraseña_c:
                     messages.error(request, 'Las contraseñas no coinciden')
@@ -50,9 +50,10 @@ def registro_estudiante(request):
 
                 horario = OrderedDict()
                 horario['apro'] = []
-                horario_json = json.dumps(horario)
 
-                Estudiantes.objects.create(documento_identidad=documento, nombre_completo=nombre,programa_academico=programa_academico, contraseña=contraseña, aprobadas=horario)
+                estudent = Estudiantes(documento_identidad=documento, nombre_completo=nombre,programa_academico=programa_academico, contraseña=contraseña, aprobadas=horario)
+                estudent.save()
+
                 messages.success(request, 'Usuario creado con éxito')
                 return redirect('iniciar_sesion')
             except ValueError:

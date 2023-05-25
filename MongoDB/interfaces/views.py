@@ -111,19 +111,17 @@ def home_estudiante(request, documento):
 #Ver las clases
 def get_clases(request,documento):
     estudiante = Estudiantes.objects.select_for_update().get(documento_identidad=documento)
-    '''registros = Registros.objects.filter(codigo_estudiante=estudiante.id, fecha_registro__year=datetime.now().year)
-    clases = Clases.objects.filter(id_clase__in=registros.values('id_clase'))'''
     registros = Registros.objects.filter(codigo_estudiante=estudiante.id, fecha_registro__year=datetime.now().year)
-    clases = Clases.objects.filter(id__in=registros.values('id_clase_id'))
+    clases = Clases.objects.filter(id__in=registros.values('id'))
     if request.method == 'GET':
-        return render(request, 'Estudiante/clases.html', {
+        return render(request, 'Estudiantes/clases.html', {
             'title': f'Clases {estudiante.nombre_completo}',
             'estudiante': estudiante,
             'clases': clases,
         })
     else:
         clase = request.POST['id_clase']
-        registro = registros.get(id_clase=clase)
+        registro = Registros.get(id_clase=clase)
 
         registro.delete()
         messages.success(request, 'Materia eliminada con éxito')

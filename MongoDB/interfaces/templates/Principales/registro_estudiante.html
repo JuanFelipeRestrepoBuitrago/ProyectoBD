@@ -1,0 +1,35 @@
+{% extends 'Layouts/base_principal.html' %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col col-6">
+            <h3>Ingrese los siguientes datos</h3>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group mb-3 mt-4">
+                    <label for="nombre" class="form-label">Nombre Completo</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese nombre completo" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="documento" class="form-label">Documento de Identidad</label>
+                    <input type="number" class="form-control" id="documento" name="documento" placeholder="Ingrese documento de identidad" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="programa_academico" class="form-label">Programa Académico</label>
+                    <input type="text" class="form-control" id="programa_academico" name="programa_academico" placeholder="Ingrese su programa académico" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="contraseña" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="contraseña" name="contraseña" placeholder="Ingrese su contraseña" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="contraseña_c" class="form-label">Confirmar Contraseña</label>
+                    <input type="password" class="form-control" id="contraseña_c" name="contraseña_c" placeholder="Confirmar Contraseña" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Registrarse</button>
+                <button type="submit" onclick="location.href='{% url 'iniciar_sesion' %}'" class="btn btn-secondary">Cancelar</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

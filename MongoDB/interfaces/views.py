@@ -3,9 +3,14 @@ from .models import *
 from django.http import HttpResponse
 from datetime import datetime
 from django.contrib import messages
+#from djongo import transaction // tal parece que no funciona
+from django.db import IntegrityError
+from collections import OrderedDict
+import json
 
 # Create your views here.
 
+#Inicio Sesion
 def login(request):
     if request.method == 'GET':
         return render(request, 'Principales/iniciar_sesion.html',{
@@ -25,4 +30,35 @@ def login(request):
         except (Estudiantes.DoesNotExist, ValueError):
             messages.info(request, "No existe usuario")
             return redirect('iniciar_sesion')
+
+#Registro Estudiante
+def registro_estudiante(request):
+        if request.method == "GET":
+            return render(request, 'Principales/registro_estudiante.html', {
+                'title': 'Registrar Estudiante',
+            })
+        else:
+            documento = request.POST['documento']
+            nombre = request.POST['nombre']
+            programa_academico = request.POST['programa_academico']
+            contraseña = request.POST['contraseña']
+            contraseña_c = request.POST['contraseña_c']
+            try:
+                if contraseña != contraseña_c:
+                    messages.error(request, 'Las contraseñas no coinciden')
+                    return redirect('registro_estudiante')
+
+                horario = OrderedDict()
+                horario['apro'] = []
+                horario_json = json.dumps(horario)
+
+                Estudiantes.objects.create(documento_identidad=documento, nombre_completo=nombre,programa_academico=programa_academico, contraseña=contraseña, aprobadas=horario)
+                messages.success(request, 'Usuario creado con éxito')
+                return redirect('iniciar_sesion')
+            except ValueError:
+                messages.error(request, 'Error al crear usuario')
+                return redirect('registro_estudiante')
+            except IntegrityError:
+                messages.error(request, 'El usuario con ese documento ya existe')
+                return redirect('registro_estudiante')
 

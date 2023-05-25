@@ -5,13 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b4f09b0f-a334-44dd-a110-8575fb36f8d8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/ProyectoBD.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ProyectoBD.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MongoDB/MongoDB/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/MongoDB/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MongoDB/MongoDB/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/MongoDB/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MySQL/interfaces/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/MySQL/interfaces/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MySQL/interfaces/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/MySQL/interfaces/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MongoDB/interfaces/templates/Principales/iniciar_sesion.html" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/interfaces/templates/Principales/iniciar_sesion.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MongoDB/interfaces/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/interfaces/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MongoDB/interfaces/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/interfaces/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +62,7 @@
       <workItem from="1684946218492" duration="1017000" />
       <workItem from="1684947259046" duration="1127000" />
       <workItem from="1684951063348" duration="4543000" />
-      <workItem from="1684962000444" duration="8495000" />
+      <workItem from="1684962000444" duration="11959000" />
     </task>
     <servers />
   </component>

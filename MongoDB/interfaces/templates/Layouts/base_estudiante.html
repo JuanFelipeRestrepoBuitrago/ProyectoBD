@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <nav class="navbar navbar-expand ps-5  navbar-light bg-light">
+        <p class="ms-5 mt-3">
+            <strong>{{ estudiante.nombre_completo }}</strong>
+        </p>
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-brand" href="{% url 'principal_estudiante' estudiante.documento_identidad %}">
+                            {% load static %}
+                            <img src="{% static 'Home.png' %}" width=30 height=30 alt="">
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown ms-5">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Clases
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{% url 'clases_estudiante' estudiante.documento_identidad %}">Ver mis Clases</a></li>
+                            <li><a class="dropdown-item" href="{% url 'registrar_materias' estudiante.documento_identidad %}">Registrar Clases</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'facturas_estudiante' estudiante.documento_identidad %}">Facturas</a>
+                    </li>
+                </ul>
+                <div class="d-flex justify-content-end align-items-center">
+                    <a class="nav-brand me-4" href="{% url 'iniciar_sesion' %}">
+                        <img src="{% static 'Logout.png' %}" width=30 height=30 alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</head>
+<body>
+    <div class="container container-fluid bg-light bg-gradient">
+        <div class="row">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <div class="alert alert-dismissible alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}">
+                            <strong class="text-dark">{{ message }}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

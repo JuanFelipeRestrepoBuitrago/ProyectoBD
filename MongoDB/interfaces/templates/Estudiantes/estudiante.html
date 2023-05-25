@@ -1,0 +1,28 @@
+{% extends 'Layouts/base_estudiante.html' %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-5">
+            <h1 class="text-start mt-3">Modificar Perfil</h1>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group mt-2">
+                    <label for="documento">Documento</label>
+                    <input type="number" class="form-control" id="documento" name="documento" placeholder="Ingrese su Nombre Completo" value="{{ estudiante.documento_identidad }}" readonly>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="nombre_completo">Nombre Completo</label>
+                    <input type="text" class="form-control" id="nombre_completo" name="nombre_completo" placeholder="Ingrese su Nombre Completo" value="{{ estudiante.nombre_completo }}">
+                </div>
+                <div class="form-group mt-2">
+                    <label for="programa_academico">Programa Académico</label>
+                    <input type="text" class="form-control" id="programa_academico" name="programa_academico" placeholder="Ingrese su Programa Académico" value="{{ estudiante.programa_academico }}">
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Actualizar</button>
+            </form>
+            <p class="mt-2">
+                <a href="{% url 'cambiar_contraseña' %}">Cambiar Contraseña</a>
+            </p>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,162 @@
+[
+	{
+		"id" : 1,
+		"tipo_clase" : "Magistral",
+		"profesor" : {
+			"nombre_completo" : "David Castro Lopez",
+			"certificaciones" : "Matemático",
+			"documento" : 1172904439
+		},
+		"materia" : "Cálculo I",
+		"horario" : "{\"Año\": 2023, \"Horarios\": [{\"Dia\": \"Martes\", \"Hora\": \"03:00:00 PM\", \"Duracion\": \"01:30:00\"}, {\"Dia\": \"Viernes\", \"Hora\": \"10:30:00 AM\", \"Duracion\": \"01:30:00\"}], \"Semestre\": 1}",
+		"aula" : {
+			"numero_bloque" : 33,
+			"numero_aula" : 402,
+			"capacidad" : 30,
+			"sede" : "Poblado",
+			"tipo_aula" : "Clase"
+		}
+	},
+	{
+		"id" : 2,
+		"tipo_clase" : "Magistral",
+		"profesor" : {
+			"nombre_completo" : "David Castro Lopez",
+			"certificaciones" : "Matemático",
+			"documento" : 1172904439
+		},
+		"materia" : "Cálculo II",
+		"horario" : "{\"Año\": 2023, \"Horarios\": [{\"Dia\": \"Martes\", \"Hora\": \"12:00:00 PM\", \"Duracion\": \"01:30:00\"}, {\"Dia\": \"Jueves\", \"Hora\": \"10:30:00 AM\", \"Duracion\": \"01:30:00\"}], \"Semestre\": 1}",
+		"aula" : {
+			"numero_bloque" : 13,
+			"numero_aula" : 201,
+			"capacidad" : 15,
+			"sede" : "Poblado",
+			"tipo_aula" : "Laboratorio"
+		}
+	},
+	{
+		"id" : 3,
+		"tipo_clase" : "Clase",
+		"profesor" : null,
+		"materia" : "Lógica",
+		"horario" : "{\"Año\": 2023, \"Horarios\": [{\"Dia\": \"Martes\", \"Hora\": \"06:00:00 AM\", \"Duracion\": \"01:30:00\"}, {\"Dia\": \"Miercoles\", \"Hora\": \"07:30:00 AM\", \"Duracion\": \"01:30:00\"}], \"Semestre\": 1}",
+		"aula" : {
+			"numero_bloque" : 18,
+			"numero_aula" : 402,
+			"capacidad" : 23,
+			"sede" : "Poblado",
+			"tipo_aula" : "Computadores"
+		}
+	},
+	{
+		"id" : 4,
+		"tipo_clase" : "Laboratorio",
+		"profesor" : {
+			"nombre_completo" : "Andres Restrepo Perez",
+			"certificaciones" : "Físico",
+			"documento" : 1454131828
+		},
+		"materia" : "Física I",
+		"horario" : "{\"Año\": 2023, \"Horarios\": [{\"Dia\": \"Martes\", \"Hora\": \"04:00:00 PM\", \"Duracion\": \"02:00:00\"}], \"Semestre\": 1}",
+		"aula" : null
+	},
+	{
+		"id" : 5,
+		"tipo_clase" : "Taller",
+		"profesor" : {
+			"nombre_completo" : "Miguel Herrera Garcia",
+			"certificaciones" : "Ingeniero de Software",
+			"documento" : 2059138408
+		},
+		"materia" : "Estructuras Discretas",
+		"horario" : "{\"Año\": 2023, \"Horarios\": [{\"Dia\": \"Lunes\", \"Hora\": \"10:00:00 AM\", \"Duracion\": \"02:00:00\"}], \"Semestre\": 1}",
+		"aula" : {
+			"numero_bloque" : 19,
+			"numero_aula" : 201,
+			"capacidad" : 9,
+			"sede" : "Poblado",
+			"tipo_aula" : "Electrónica"
+		}
+	},
+	{
+		"id" : 6,
+		"tipo_clase" : "Clase",
+		"profesor" : {
+			"nombre_completo" : "David Castro Lopez",
+			"certificaciones" : "Matemático",
+			"documento" : 1172904439
+		},
+		"materia" : "Física II",
+		"horario" : "{\"Año\": 2023, \"Horarios\": [{\"Dia\": \"Lunes\", \"Hora\": \"09:00:00 AM\", \"Duracion\": \"03:00:00\"}], \"Semestre\": 1}",
+		"aula" : {
+			"numero_bloque" : 13,
+			"numero_aula" : 103,
+			"capacidad" : 5,
+			"sede" : "Poblado",
+			"tipo_aula" : "Química"
+		}
+	},
+	{
+		"id" : 7,
+		"tipo_clase" : "Magistral",
+		"profesor" : null,
+		"materia" : "Cálculo III",
+		"horario" : "{\"Año\": 2023, \"Horarios\": [{\"Dia\": \"Lunes\", \"Hora\": \"04:30:00 PM\", \"Duracion\": \"01:30:00\"}, {\"Dia\": \"Jueves\", \"Hora\": \"04:30:00 PM\", \"Duracion\": \"01:30:00\"}], \"Semestre\": 1}",
+		"aula" : null
+	},
+	{
+		"id" : 8,
+		"tipo_clase" : "Laboratorio",
+		"profesor" : {
+			"nombre_completo" : "David Castro Lopez",
+			"certificaciones" : "Matemático",
+			"documento" : 1172904439
+		},
+		"materia" : "Física II",
+		"horario" : "{\"Año\": 2023, \"Horarios\": [{\"Dia\": \"Miercoles\", \"Hora\": \"09:00:00 AM\", \"Duracion\": \"02:00:00\"}], \"Semestre\": 1}",
+		"aula" : {
+			"numero_bloque" : 19,
+			"numero_aula" : 103,
+			"capacidad" : 18,
+			"sede" : "Poblado",
+			"tipo_aula" : "Mecánica"
+		}
+	},
+	{
+		"id" : 9,
+		"tipo_clase" : "Clase",
+		"profesor" : {
+			"nombre_completo" : "Miguel Herrera Garcia",
+			"certificaciones" : "Ingeniero de Software",
+			"documento" : 2059138408
+		},
+		"materia" : "Fundamentos de Programación",
+		"horario" : "{\"Año\": 2023, \"Horarios\": [{\"Dia\": \"Martes\", \"Hora\": \"10:30:00 AM\", \"Duracion\": \"01:30:00\"}, {\"Dia\": \"Jueves\", \"Hora\": \"12:00:00 PM\", \"Duracion\": \"01:30:00\"}], \"Semestre\": 1}",
+		"aula" : {
+			"numero_bloque" : 27,
+			"numero_aula" : 304,
+			"capacidad" : 2,
+			"sede" : "Poblado",
+			"tipo_aula" : "Musical"
+		}
+	},
+	{
+		"id" : 10,
+		"tipo_clase" : "Clase",
+		"profesor" : {
+			"nombre_completo" : "Diego Restrepo Cardona",
+			"certificaciones" : "Doctor en Literatura",
+			"documento" : 1442858283
+		},
+		"materia" : "Prácticas Textuales",
+		"horario" : "{\"Año\": 2023, \"Horarios\": [{\"Dia\": \"Martes\", \"Hora\": \"6:00:00 PM\", \"Duracion\": \"03:00:00\"}], \"Semestre\": 1}",
+		"aula" : {
+			"numero_bloque" : 38,
+			"numero_aula" : 304,
+			"capacidad" : 25,
+			"sede" : "Poblado",
+			"tipo_aula" : "Clase"
+		}
+	}
+]

@@ -1,0 +1,112 @@
+[
+	{
+		"id" : 1,
+		"fecha_emision" : {
+			"$date": "2023-05-24"
+		},
+		"fecha_vencimiento" : {
+			"$date": "2023-07-24"
+		},
+		"pagado" : 0,
+		"valor" : 5800000
+	},
+	{
+		"id" : 2,
+		"fecha_emision" : {
+			"$date": "2023-05-24"
+		},
+		"fecha_vencimiento" : {
+			"$date": "2023-07-24"
+		},
+		"pagado" : 1,
+		"valor" : 3625000
+	},
+	{
+		"id" : 3,
+		"fecha_emision" : {
+			"$date": "2023-05-24"
+		},
+		"fecha_vencimiento" : {
+			"$date": "2023-07-24"
+		},
+		"pagado" : 0,
+		"valor" : 2175000
+	},
+	{
+		"id" : 4,
+		"fecha_emision" : {
+			"$date": "2023-05-24"
+		},
+		"fecha_vencimiento" : {
+			"$date": "2023-07-24"
+		},
+		"pagado" : 0,
+		"valor" : 3625000
+	},
+	{
+		"id" : 5,
+		"fecha_emision" : {
+			"$date": "2023-05-24"
+		},
+		"fecha_vencimiento" : {
+			"$date": "2023-07-24"
+		},
+		"pagado" : 0,
+		"valor" : 2175000
+	},
+	{
+		"id" : 6,
+		"fecha_emision" : {
+			"$date": "2023-05-24"
+		},
+		"fecha_vencimiento" : {
+			"$date": "2023-07-24"
+		},
+		"pagado" : 1,
+		"valor" : 2175000
+	},
+	{
+		"id" : 7,
+		"fecha_emision" : {
+			"$date": "2023-05-24"
+		},
+		"fecha_vencimiento" : {
+			"$date": "2023-07-24"
+		},
+		"pagado" : 0,
+		"valor" : 0
+	},
+	{
+		"id" : 8,
+		"fecha_emision" : {
+			"$date": "2023-05-24"
+		},
+		"fecha_vencimiento" : {
+			"$date": "2023-07-24"
+		},
+		"pagado" : 0,
+		"valor" : 0
+	},
+	{
+		"id" : 9,
+		"fecha_emision" : {
+			"$date": "2023-05-24"
+		},
+		"fecha_vencimiento" : {
+			"$date": "2023-07-24"
+		},
+		"pagado" : 0,
+		"valor" : 0
+	},
+	{
+		"id" : 10,
+		"fecha_emision" : {
+			"$date": "2023-05-24"
+		},
+		"fecha_vencimiento" : {
+			"$date": "2023-07-24"
+		},
+		"pagado" : 0,
+		"valor" : 0
+	}
+]

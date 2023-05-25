@@ -1,0 +1,92 @@
+[
+	{
+		"id" : 1,
+		"codigo_estudiante" : 2,
+		"id_clase" : 1,
+		"fecha_registro" : {
+			"$date": "2023-05-24"
+		},
+		"id_factura" : 4
+	},
+	{
+		"id" : 2,
+		"codigo_estudiante" : 2,
+		"id_clase" : 10,
+		"fecha_registro" : {
+			"$date": "2023-05-24"
+		},
+		"id_factura" : 4
+	},
+	{
+		"id" : 3,
+		"codigo_estudiante" : 3,
+		"id_clase" : 1,
+		"fecha_registro" : {
+			"$date": "2023-05-24"
+		},
+		"id_factura" : 2
+	},
+	{
+		"id" : 4,
+		"codigo_estudiante" : 3,
+		"id_clase" : 4,
+		"fecha_registro" : {
+			"$date": "2023-05-24"
+		},
+		"id_factura" : 2
+	},
+	{
+		"id" : 5,
+		"codigo_estudiante" : 10,
+		"id_clase" : 5,
+		"fecha_registro" : {
+			"$date": "2023-05-24"
+		},
+		"id_factura" : 1
+	},
+	{
+		"id" : 6,
+		"codigo_estudiante" : 10,
+		"id_clase" : 1,
+		"fecha_registro" : {
+			"$date": "2023-05-24"
+		},
+		"id_factura" : 1
+	},
+	{
+		"id" : 7,
+		"codigo_estudiante" : 10,
+		"id_clase" : 4,
+		"fecha_registro" : {
+			"$date": "2023-05-24"
+		},
+		"id_factura" : 1
+	},
+	{
+		"id" : 8,
+		"codigo_estudiante" : 7,
+		"id_clase" : 10,
+		"fecha_registro" : {
+			"$date": "2023-05-24"
+		},
+		"id_factura" : 6
+	},
+	{
+		"id" : 9,
+		"codigo_estudiante" : 5,
+		"id_clase" : 10,
+		"fecha_registro" : {
+			"$date": "2023-05-24"
+		},
+		"id_factura" : 3
+	},
+	{
+		"id" : 10,
+		"codigo_estudiante" : 9,
+		"id_clase" : 10,
+		"fecha_registro" : {
+			"$date": "2023-05-24"
+		},
+		"id_factura" : 5
+	}
+]

@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from .models import *
 from datetime import datetime
 from django.contrib import messages
-from django.db import IntegrityError
+from django.db import IntegrityError, models
 from collections import OrderedDict
+#from djongo import  models
 
 
 # Create your views here.
@@ -188,7 +189,9 @@ def registrar_materias(request, documento):
     """
     estudiante = Estudiantes.objects.select_for_update().get(documento_identidad=documento)
     registros = Registros.objects.filter(codigo_estudiante=estudiante.id)
-    clases = Clases.objects.exclude(id__in=registros.values('id_clase'))
+    clases = Clases.objects.filter(~models.Q(id__in=registros.values('id_clase')))
+    # clases = Clases.objects.exclude(id__in=registros.values('id_clase'))
+    #clases = Clases.objects.filter(models.Q(id__in=registros.values('id_clase'))==False)
     facturas_no_pagadas = Facturas.objects.filter(pagado=False, id__in=registros.values('id_factura'))
     registro = Registros.objects.filter(fecha_registro=datetime.now().date(), codigo_estudiante=estudiante.id,
                                         id_factura__in=facturas_no_pagadas.values('id')).first()
@@ -209,7 +212,7 @@ def registrar_materias(request, documento):
             factura = Facturas.objects.create(fecha_emision=datetime.now().date(), fecha_vencimiento=datetime.now().date())
 
         clase = Clases.objects.get(id=clase)
-        materia = Materias.object.get(nombre=clase.materia)
+        materia = Materias.objects.get(nombre=clase.materia)
         factura.valor += (materia.numero_creditos * 725.000)
         registro = Registros.objects.create(codigo_estudiante=estudiante, id_clase=clase.id, id_factura=factura, fecha_registro=datetime.now().date())
         factura.save()
@@ -260,7 +263,7 @@ def crud_admin(request):
     """
     administradores = Administradores.objects.all()
     if request.method == "GET":
-        return render(request, 'Administrador/administradores/crud_administrador.html', {
+        return render(request, 'Administrador/crud_administradores.html', {
             'administradores': administradores,
             'tittle': 'Administradores',
         })

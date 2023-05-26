@@ -6,11 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="b4f09b0f-a334-44dd-a110-8575fb36f8d8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MongoDB/interfaces/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/interfaces/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MongoDB/interfaces/templates/Administrador/crud_administradores.html" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/interfaces/templates/Administrador/crud_administradores.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MongoDB/interfaces/templates/static/Home.png" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/static/Home.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MongoDB/interfaces/templates/static/Logout.png" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/static/Logout.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MongoDB/interfaces/templates/static/Settings.png" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/static/Settings.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MongoDB/interfaces/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/interfaces/views.py" afterDir="false" />
     </list>
     <list id="89d701bd-f198-4f37-8664-e05555db9155" name="Changes by Juan Felipe Restrepo Buitrago" comment="">
-      <change beforePath="$PROJECT_DIR$/MongoDB/interfaces/templates/Layouts/base_estudiante.html" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/interfaces/templates/Layouts/base_estudiante.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MongoDB/interfaces/templates/Estudiantes/registrar_materias.html" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/interfaces/templates/Estudiantes/registrar_materias.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MongoDB/interfaces/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDB/interfaces/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -32,21 +35,11 @@
   <component name="LineStatusTrackerManager">
     <file path="$PROJECT_DIR$/MongoDB/interfaces/views.py">
       <ranges>
-        <range start1="2" end1="3" start2="2" end2="2" changelist="89d701bd-f198-4f37-8664-e05555db9155" />
-        <range start1="5" end1="6" start2="4" end2="4" changelist="89d701bd-f198-4f37-8664-e05555db9155" />
-        <range start1="8" end1="9" start2="6" end2="7" changelist="89d701bd-f198-4f37-8664-e05555db9155" />
-        <range start1="12" end1="13" start2="10" end2="11" changelist="89d701bd-f198-4f37-8664-e05555db9155" />
-        <range start1="14" end1="14" start2="12" end2="20" changelist="89d701bd-f198-4f37-8664-e05555db9155" />
-        <range start1="33" end1="34" start2="39" end2="40" changelist="89d701bd-f198-4f37-8664-e05555db9155" />
-        <range start1="35" end1="35" start2="41" end2="50" changelist="89d701bd-f198-4f37-8664-e05555db9155" />
-        <range start1="68" end1="69" start2="83" end2="84" changelist="89d701bd-f198-4f37-8664-e05555db9155" />
-        <range start1="70" end1="70" start2="85" end2="94" changelist="89d701bd-f198-4f37-8664-e05555db9155" />
-        <range start1="96" end1="96" start2="120" end2="129" changelist="89d701bd-f198-4f37-8664-e05555db9155" />
-        <range start1="110" end1="111" start2="143" end2="144" changelist="89d701bd-f198-4f37-8664-e05555db9155" />
-        <range start1="112" end1="112" start2="145" end2="154" changelist="89d701bd-f198-4f37-8664-e05555db9155" />
-        <range start1="114" end1="115" start2="156" end2="157" changelist="b4f09b0f-a334-44dd-a110-8575fb36f8d8" />
-        <range start1="125" end1="125" start2="167" end2="173" changelist="89d701bd-f198-4f37-8664-e05555db9155" />
-        <range start1="128" end1="128" start2="176" end2="273" changelist="b4f09b0f-a334-44dd-a110-8575fb36f8d8" />
+        <range start1="4" end1="5" start2="4" end2="5" changelist="89d701bd-f198-4f37-8664-e05555db9155" />
+        <range start1="6" end1="6" start2="6" end2="7" changelist="b4f09b0f-a334-44dd-a110-8575fb36f8d8" />
+        <range start1="190" end1="191" start2="191" end2="194" changelist="b4f09b0f-a334-44dd-a110-8575fb36f8d8" />
+        <range start1="211" end1="212" start2="214" end2="215" changelist="89d701bd-f198-4f37-8664-e05555db9155" />
+        <range start1="262" end1="263" start2="265" end2="266" changelist="b4f09b0f-a334-44dd-a110-8575fb36f8d8" />
       </ranges>
     </file>
   </component>
@@ -55,25 +48,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/valen/OneDrive/Documentos/GitHub/ProyectoBD/MongoDB/interfaces/templates/static",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/valen/OneDrive/Documentos/GitHub/ProyectoBD/MongoDB/interfaces/templates/static&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\valen\OneDrive\Documentos\GitHub\ProyectoBD\MongoDB\interfaces\templates\static" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\valen\OneDrive\Documentos\GitHub\ProyectoBD\MongoDB" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -96,7 +92,9 @@
       <workItem from="1684951063348" duration="4543000" />
       <workItem from="1684962000444" duration="12538000" />
       <workItem from="1684975666557" duration="9000" />
-      <workItem from="1684976698334" duration="13338000" />
+      <workItem from="1684976698334" duration="14899000" />
+      <workItem from="1685065073951" duration="7000" />
+      <workItem from="1685127276734" duration="216000" />
     </task>
     <servers />
   </component>

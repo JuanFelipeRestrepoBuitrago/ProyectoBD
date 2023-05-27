@@ -361,17 +361,22 @@ def create_admin(request):
         return redirect('crud_admin')
     else:
         try:
-            if Estudiantes.objects.filter(documento_identidad=usuario).exists():
+            try:
+                Estudiantes.objects.get(documento_identidad=usuario)
                 raise Estudiantes.DoesNotExist
+            except Estudiantes.DoesNotExist:
+                messages.info(request, 'Un usuario estudiante con ese nombre de usuario ya existe')
+                return redirect('crud_admin')
+            except ValueError:
+                print('No es un número')
             Administradores.objects.create(usuario=usuario, contraseña=contraseña)
             messages.success(request, 'Administrador creado con éxito')
             return redirect('crud_admin')
         except IntegrityError:
             messages.info(request, 'El usuario ya existe')
             return redirect('crud_admin')
-        except Estudiantes.DoesNotExist:
-            messages.info(request, 'Un usuario estudiante con ese nombre de usuario ya existe')
-            return redirect('crud_admin')
+
+
 
 
 @transaction.atomic

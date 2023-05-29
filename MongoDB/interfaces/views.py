@@ -157,14 +157,17 @@ def get_clases(request,documento):
             'clases': clases,
         })
     else:
+        '''
         clase = request.POST['id_clase']
-        
-        registro = Registros.objects.get(id_clase=clase)
-
+        registro = Registros.objects(Q(id_clase=clase) & Q(codigo_estudiante=estudiante.id_estudiante) & Q(fecha_registro__gte=datetime(current_year, 1, 1), fecha_registro__lt=datetime(current_year, 12, 31)))
         clase = Clases.objects.get(id_clase=clase)
-        materia = Materias.object.get(nombre=clase.materia)
-        factura = Facturas.objects.get(id_factura=registro.id_factura)
+        materia = Materias.objects.get(nombre_materia=clase.materia)
+        reg = 0
+        for cosa in registro:
+            reg = cosa
+        factura = Facturas.objects.get(id_factura=reg.id_factura)
         factura.update(valor=(factura.valor - (materia.numero_creditos * 725000)))
         registro.delete()
         messages.success(request, 'Materia eliminada con éxito')
+        '''
         return redirect('clases_estudiante', documento=estudiante.documento_identidad)

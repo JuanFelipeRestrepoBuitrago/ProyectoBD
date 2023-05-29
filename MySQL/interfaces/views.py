@@ -363,10 +363,12 @@ def create_admin(request):
         try:
             try:
                 Estudiantes.objects.get(documento_identidad=usuario)
-                raise Estudiantes.DoesNotExist
-            except Estudiantes.DoesNotExist:
+                raise TypeError
+            except TypeError:
                 messages.info(request, 'Un usuario estudiante con ese nombre de usuario ya existe')
                 return redirect('crud_admin')
+            except Estudiantes.DoesNotExist:
+                print('No es un estudiante')
             except ValueError:
                 print('No es un número')
             Administradores.objects.create(usuario=usuario, contraseña=contraseña)

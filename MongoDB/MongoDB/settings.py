@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*c7qbz=%@^pr#nv&5jt4n+7=$w+e#(p7_gi)9hg43$c0#+r-$g'
+SECRET_KEY = 'django-insecure-ee)(wtf#5iuo+5k4bkh2esj&xkygyrjy($2tifx-63+3lht@oj'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,9 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'djongo',
+    'bootstrap5',
     'interfaces',
-    'bootstrap5'
 ]
 
 MIDDLEWARE = [
@@ -58,8 +56,7 @@ ROOT_URLCONF = 'MongoDB.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'interfaces/templates']
-        ,
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -77,7 +74,6 @@ WSGI_APPLICATION = 'MongoDB.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 '''
 DATABASES = {
     'default': {
@@ -86,16 +82,8 @@ DATABASES = {
     }
 }
 '''
-
-DATABASES = {
-    'default': {
-    'ENGINE': 'djongo',
-    'NAME': 'matriculas_eafit2',
-    'HOST': 'localhost',
-    'PORT': 27017,
-    'USER': 'admin',
-    }
-}
+import mongoengine
+mongoengine.connect(db='matriculas_eafit3', host='localhost', port=27017)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -130,6 +118,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
+
+import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATIC_URL = '/static/'

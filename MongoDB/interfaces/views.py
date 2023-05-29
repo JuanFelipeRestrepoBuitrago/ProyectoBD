@@ -3,11 +3,11 @@ from .models import *
 from datetime import datetime
 from django.contrib import messages
 from django.db import IntegrityError, models
-from collections import OrderedDict
-#from djongo import  models
+from mongoengine import *
+from .pipelines import *
 
-
-# Create your views here.
+from datetime import datetime
+from mongoengine.queryset.visitor import Q
 
 
 def login(request):
@@ -38,50 +38,45 @@ def login(request):
             messages.info(request, "No existe usuario")
             return redirect('iniciar_sesion')
 
-
 def registro_estudiante(request):
-        """
-        Vista para registrar un estudiante en la base de datos, los datos son recibidos por método POST,
-        se verifica que las contraseñas coincidan y que el documento no exista en la base de datos,
-        si todo sale bien se crea el usuario y se redirige a la página de inicio de sesión, sino se
-        muestra un mensaje de error y se redirige a la página de registro de estudiante.
+    """
+    Vista para registrar un estudiante en la base de datos, los datos son recibidos por método POST,
+    se verifica que las contraseñas coincidan y que el documento no exista en la base de datos,
+    si todo sale bien se crea el usuario y se redirige a la página de inicio de sesión, sino se
+    muestra un mensaje de error y se redirige a la página de registro de estudiante.
 
-        :param request: HttpRequest
-        :return: HttpResponse, interfaz de registro de estudiantes
-        """
-        if request.method == "GET":
-            return render(request, 'Principales/registro_estudiante.html', {
-                'title': 'Registrar Estudiante',
-            })
-        else:
-            documento = request.POST.get('documento')
-            nombre = request.POST.get('nombre')
-            programa_academico = request.POST.get('programa_academico')
-            contraseña = request.POST.get('contraseña')
-            contraseña_c = request.POST.get('contraseña_c')
-            try:
-                if contraseña != contraseña_c:
-                    messages.error(request, 'Las contraseñas no coinciden')
-                    return redirect('registro_estudiante')
-
-                horario = OrderedDict()
-                horario['apro'] = []
-
-                estudent = Estudiantes(documento_identidad=documento, nombre_completo=nombre,programa_academico=programa_academico, contraseña=contraseña, aprobadas=horario)
-                estudent.save()
-
-                messages.success(request, 'Usuario creado con éxito')
-                return redirect('iniciar_sesion')
-            except ValueError:
-                messages.error(request, 'Error al crear usuario')
+    :param request: HttpRequest
+    :return: HttpResponse, interfaz de registro de estudiantes
+    """
+    if request.method == "GET":
+        return render(request, 'Principales/registro_estudiante.html', {
+            'title': 'Registrar Estudiante',
+        })
+    else:
+        documento = request.POST.get('documento')
+        nombre = request.POST.get('nombre')
+        programa_academico = request.POST.get('programa_academico')
+        contraseña = request.POST.get('contraseña')
+        contraseña_c = request.POST.get('contraseña_c')
+        try:
+            if contraseña != contraseña_c:
+                messages.error(request, 'Las contraseñas no coinciden')
                 return redirect('registro_estudiante')
-            except IntegrityError:
-                messages.error(request, 'El usuario con ese documento ya existe')
-                return redirect('registro_estudiante')
-            except:
-                messages.error(request, 'Error de registro')
-                return redirect('registro_estudiante')
+            siguiente_id = next_id('Estudiantes')
+            estudent = Estudiantes(id_estudiante = siguiente_id, documento_identidad=documento, nombre_completo=nombre,
+                                   programa_academico=programa_academico, contraseña=contraseña).save()
 
+            messages.success(request, 'Usuario creado con éxito')
+            return redirect('iniciar_sesion')
+        except ValueError:
+            messages.error(request, 'Error al crear usuario')
+            return redirect('registro_estudiante')
+        except IntegrityError:
+            messages.error(request, 'El usuario con ese documento ya existe')
+            return redirect('registro_estudiante')
+'''        except:
+            messages.error(request, 'Error de registro')
+            return redirect('registro_estudiante')'''
 
 def cambiar_constraseña(request):
     """
@@ -103,21 +98,23 @@ def cambiar_constraseña(request):
         contraseña_c = request.POST['contraseña_confirmación']
 
         try:
-            estudiante = Estudiantes.objects.get(documento_identidad=documento)
+            #estudiante = Estudiantes.objects(documento_identidad=documento)
+            query = buscar_estudiante_documento(documento)
+            estudiantes = Estudiantes.objects.aggregate(query)
             if contraseña != contraseña_c:
                 messages.error(request, 'Las contraseñas no coinciden')
                 return redirect('cambiar_contraseña')
             else:
-                estudiante.contraseña = contraseña
-                estudiante.save()
+                for estudiante in estudiantes:
+                    estudiante_modificado = Estudiantes.objects.get(id=estudiante['_id'])
+                    estudiante_modificado.update(contraseña=contraseña)
+                #estudiante.update(contraseña=contraseña)
                 messages.success(request, 'Contraseña modificada con éxito')
                 return redirect('iniciar_sesion')
         except Estudiantes.DoesNotExist:
             messages.info(request, 'Usuario no existente')
             return redirect('iniciar_sesion')
 
-
-#Pagina de inicio para estudiante
 def home_estudiante(request, documento):
     """
     Vista para mostrar la página principal del estudiante, en esta se puede hacer update
@@ -128,20 +125,16 @@ def home_estudiante(request, documento):
     :param documento: str, documento del estudiante que está actualmente en sesión
     :return: HttpResponse, interfaz de la página principal del estudiante
     """
-    estudiante = Estudiantes.objects.select_for_update().get(documento_identidad=documento)
+    estudiante = Estudiantes.objects.get(documento_identidad=documento)
     if request.method == 'GET':
         return render(request, 'Estudiantes/estudiante.html', {
             'estudiante': estudiante,
             'title': 'Home',
         })
     else:
-        estudiante.nombre_completo = request.POST['nombre_completo']
-        estudiante.documento_identidad = request.POST['documento']
-        estudiante.programa_academico = request.POST['programa_academico']
-        estudiante.save()
+        estudiante.update(nombre_completo=request.POST['nombre_completo'], documento_identidad=request.POST['documento'], programa_academico=request.POST['programa_academico'])
         messages.success(request, 'Datos modificados con éxito')
         return redirect('principal_estudiante', documento=estudiante.documento_identidad)
-
 
 def get_clases(request,documento):
     """
@@ -153,9 +146,10 @@ def get_clases(request,documento):
     :param documento: str, documento del estudiante que está actualmente en sesión
     :return: HttpResponse, interfaz de las clases registradas por el estudiante
     """
-    estudiante = Estudiantes.objects.select_for_update().get(documento_identidad=documento)
-    registros = Registros.objects.filter(codigo_estudiante=estudiante.id, fecha_registro__year=datetime.now().year)
-    clases = Clases.objects.filter(id__in=registros.values('id_clase'))
+    current_year = datetime.now().year
+    estudiante = Estudiantes.objects.get(documento_identidad=documento)
+    registros = Registros.objects(Q(codigo_estudiante=estudiante.id_estudiante) & Q(fecha_registro__gte=datetime(current_year, 1, 1), fecha_registro__lt=datetime(current_year, 12, 31)))
+    clases = Clases.objects(id_clase__in=registros.distinct('id_clase'))
     if request.method == 'GET':
         return render(request, 'Estudiantes/clases.html', {
             'title': f'Clases {estudiante.nombre_completo}',
@@ -164,113 +158,13 @@ def get_clases(request,documento):
         })
     else:
         clase = request.POST['id_clase']
-        registro = Registros.get(id_clase=clase)
+        
+        registro = Registros.objects.get(id_clase=clase)
 
-        clase = Clases.objects.get(id=clase)
+        clase = Clases.objects.get(id_clase=clase)
         materia = Materias.object.get(nombre=clase.materia)
-        factura = Facturas.objects.get(id=registro.id_factura)
-        factura.valor -= (materia.numero_creditos * 725.000)
-
-        factura.save()
+        factura = Facturas.objects.get(id_factura=registro.id_factura)
+        factura.update(valor=(factura.valor - (materia.numero_creditos * 725000)))
         registro.delete()
         messages.success(request, 'Materia eliminada con éxito')
         return redirect('clases_estudiante', documento=estudiante.documento_identidad)
-
-
-def registrar_materias(request, documento):
-    """
-    Vista para que un estudiante pueda registrar clases. En esta vista se puede ver y registrar las clases que
-    aún no ha registrado el estudiante en el sistema. Es decir, se crean los registro hechos por el estudiante,
-    los cuales están en la tabla Registros.
-
-    :param request: HttpRequest
-    :param documento: str, documento del estudiante que está actualmente en sesión
-    :return: HttpResponse, interfaz de las clases que aún no ha registrado el estudiante y que puede registrar
-    """
-    estudiante = Estudiantes.objects.select_for_update().get(documento_identidad=documento)
-    registros = Registros.objects.filter(codigo_estudiante=estudiante.id)
-    clases = Clases.objects.filter(~models.Q(id__in=registros.values('id_clase')))
-    # clases = Clases.objects.exclude(id__in=registros.values('id_clase'))
-    #clases = Clases.objects.filter(models.Q(id__in=registros.values('id_clase'))==False)
-    facturas_no_pagadas = Facturas.objects.filter(pagado=False, id__in=registros.values('id_factura'))
-    registro = Registros.objects.filter(fecha_registro=datetime.now().date(), codigo_estudiante=estudiante.id,
-                                        id_factura__in=facturas_no_pagadas.values('id')).first()
-
-    if request.method == 'GET':
-        return render(request, 'Estudiantes/registrar_materias.html', {
-            'title': 'Registrar Materias',
-            'estudiante': estudiante,
-            'clases': clases,
-        })
-    else:
-        clase = request.POST['id_clase']
-        try:
-            if registro is None:
-                raise Facturas.DoesNotExist
-            factura = Facturas.objects.get(id_factura=registro.id_factura)
-        except Facturas.DoesNotExist:
-            factura = Facturas.objects.create(fecha_emision=datetime.now().date(), fecha_vencimiento=datetime.now().date())
-
-        clase = Clases.objects.get(id=clase)
-        materia = Materias.objects.get(nombre=clase.materia)
-        factura.valor += (materia.numero_creditos * 725.000)
-        registro = Registros.objects.create(codigo_estudiante=estudiante, id_clase=clase.id, id_factura=factura, fecha_registro=datetime.now().date())
-        factura.save()
-        registro.save()
-        messages.success(request, 'Materia registrada y factura generada con éxito')
-        return redirect('clases_estudiante', documento=estudiante.documento_identidad)
-
-
-#Vista de las facturas para los diferentes estudiantes
-def facturas_estudiante(request, documento):
-    """
-    Vista para que un estudiante pueda ver las facturas que tiene a su nombre. En esta vista se puede ver
-    y solo se puede modificar el estado de la factura, es decir, si está pagada o no.
-
-    :param request: HttpRequest
-    :param documento: str, documento del estudiante que está actualmente en sesión
-    :return: HttpResponse, interfaz de las facturas que tiene el estudiante a su nombre
-    """
-    estudiante = Estudiantes.objects.select_for_update().get(documento_identidad=documento)
-    registros = Registros.objects.filter(codigo_estudiante=estudiante.id)
-    facturas = Facturas.objects.filter(id__in=registros.values('id_factura'))
-    if request.method == 'GET':
-        return render(request, 'Estudiantes/facturas.html', {
-            'title': 'Facturas',
-            'estudiante': estudiante,
-            'facturas': facturas,
-        })
-    else:
-        factura = request.POST['id_factura']
-        pagado = request.POST['pagado']
-        factura = facturas.get(id_factura=factura)
-        factura.pagado = pagado
-        factura.save()
-
-        messages.success(request, 'Factura modificada con éxito')
-        return redirect('facturas_estudiante', documento=estudiante.documento_identidad)
-
-
-def crud_admin(request):
-    """
-    Vista para hacer la crud de la tabla, administradores. En esta vista se puede crear, ver
-    y eliminar administradores. Si se elige un administrador en específico, se redirige a una
-    vista para editar el administrador seleccionado. Para crear un administrador se hace uso
-    de la vista de crear administrador con un método POST.
-
-    :param request: HttpRequest
-    :return: HttpResponse, interfaz para la crud de la tabla, administradores
-    """
-    administradores = Administradores.objects.all()
-    if request.method == "GET":
-        return render(request, 'Administrador/crud_administradores.html', {
-            'administradores': administradores,
-            'tittle': 'Administradores',
-        })
-    else:
-        id_admin = request.POST['id_admin']
-        administrador = Administradores.objects.get(usuario=id_admin)
-        administrador.delete()
-        messages.success(request, 'Administrador eliminado con éxito')
-        return redirect('crud_admin')
-

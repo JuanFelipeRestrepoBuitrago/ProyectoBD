@@ -1,123 +1,102 @@
 [
 	{
-		"id" : 1,
+		"id_estudiante" : 1,
 		"documento_identidad" : 1118133436,
 		"programa_academico" : "Ingeniería de Producción",
 		"nombre_completo" : "Alejandro Gomez Castro",
 		"contraseña" : "Alejo1",
-		"aprobadas" : {
-			"apro" : [
+		"aprobadas" : [
 				"Cálculo I",
 				"Cálculo II",
 				"Cálculo III"
 			]
-		}
 	},
 	{
-		"id" : 2,
+		"id_estudiante" : 2,
 		"documento_identidad" : 2038488132,
 		"programa_academico" : "Ingeniería Mecánica",
 		"nombre_completo" : "Valentina Castro Valencia",
 		"contraseña" : "Valen2a",
-		"aprobadas" : {
-			"apro" : [
+		"aprobadas" : [
 				"Física I",
 				"Física II"
 			]
-		}
 	},
 	{
-		"id" : 3,
+		"id_estudiante" : 3,
 		"documento_identidad" : 1246591872,
 		"programa_academico" : "Ecología",
 		"nombre_completo" : "María Fernanda Rojas Garcia",
 		"contraseña" : "Maria1a",
-		"aprobadas" : {
-			"apro" : [
+		"aprobadas" : [
 				"Ecología"
 			]
-		}
-
 	},
 	{
-		"id" : 4,
+		"id_estudiante" : 4,
 		"documento_identidad" : 1947700718,
 		"programa_academico" : "Comunicación Social",
 		"nombre_completo" : "Pedro Perez Gonzalez",
 		"contraseña" : "Pedropg",
-		"aprobadas" : {
-			"apro" : [
+		"aprobadas" :[
 				"Prácticas Textuales"
 			]
-		}
 	},
 	{
-		"id" : 5,
+		"id_estudiante" : 5,
 		"documento_identidad" : 1863570766,
 		"programa_academico" : "Negocios Internacionales",
 		"nombre_completo" : "Luis Vargas Gutierrez",
 		"contraseña" : "123",
-		"aprobadas" : {
-			"apro" : [
+		"aprobadas" :[
 				"Economía"
 			]
-		}
 	},
 	{
-		"id" : 6,
+		"id_estudiante" : 6,
 		"documento_identidad" : 1725969593,
 		"programa_academico" : "Psicología",
 		"nombre_completo" : "Diego Cadavid Seguro",
 		"contraseña" : "Dieguito",
-		"aprobadas" : {
-			"apro" : []
-		}
+		"aprobadas" :[]
 	},
 	{
-		"id" : 7,
+		"id_estudiante" : 7,
 		"documento_identidad" : 2066860668,
 		"programa_academico" : "Música",
 		"nombre_completo" : "David Herrera Gutierrez",
 		"contraseña" : "Panitas123",
-		"aprobadas" : {
-			"apro" : []
-		}
+		"aprobadas" :[]
 	},
 	{
-		"id" : 8,
+		"id_estudiante" : 8,
 		"documento_identidad" : 2078764748,
 		"programa_academico" : "Literatura",
 		"nombre_completo" : "Andres Valencia Buitrago",
 		"contraseña" : "Poiuyt",
-		"aprobadas" : {
-			"apro" : [
+		"aprobadas" : [
 				"Prácticas Textuales"
 			]
-		}
 	},
 	{
-		"id" : 9,
+		"id_estudiante" : 9,
 		"documento_identidad" : 1426015074,
 		"programa_academico" : "Diseño Urbano",
 		"nombre_completo" : "Camilo Garcia Giraldo",
 		"contraseña" : "Cami123",
-		"aprobadas" : {
-			"apro" : []
-		}
+		"aprobadas" : []
 	},
 	{
-		"id" : 10,
+		"id_estudiante" : 10,
 		"documento_identidad" : 2003277789,
 		"programa_academico" : "Ingeniería de Sistemas",
 		"nombre_completo" : "Andres Yepes Gonzalez",
 		"contraseña" : "Andrew123",
-		"aprobadas" : {
-			"apro" : [
+		"aprobadas" :[
 				"Fundamentos de Programación",
 				"Estructura de Datos I",
 				"Estadística",
 				"Lógica"
 			]
-		}
 	}
 ]

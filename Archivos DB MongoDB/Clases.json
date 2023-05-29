@@ -1,6 +1,6 @@
 [
 	{
-		"id" : 1,
+		"id_clase" : 1,
 		"tipo_clase" : "Magistral",
 		"profesor" : {
 			"nombre_completo" : "David Castro Lopez",
@@ -18,7 +18,7 @@
 		}
 	},
 	{
-		"id" : 2,
+		"id_clase" : 2,
 		"tipo_clase" : "Magistral",
 		"profesor" : {
 			"nombre_completo" : "David Castro Lopez",
@@ -36,7 +36,7 @@
 		}
 	},
 	{
-		"id" : 3,
+		"id_clase" : 3,
 		"tipo_clase" : "Clase",
 		"profesor" : null,
 		"materia" : "Lógica",
@@ -50,7 +50,7 @@
 		}
 	},
 	{
-		"id" : 4,
+		"id_clase" : 4,
 		"tipo_clase" : "Laboratorio",
 		"profesor" : {
 			"nombre_completo" : "Andres Restrepo Perez",
@@ -62,7 +62,7 @@
 		"aula" : null
 	},
 	{
-		"id" : 5,
+		"id_clase" : 5,
 		"tipo_clase" : "Taller",
 		"profesor" : {
 			"nombre_completo" : "Miguel Herrera Garcia",
@@ -80,7 +80,7 @@
 		}
 	},
 	{
-		"id" : 6,
+		"id_clase" : 6,
 		"tipo_clase" : "Clase",
 		"profesor" : {
 			"nombre_completo" : "David Castro Lopez",
@@ -98,7 +98,7 @@
 		}
 	},
 	{
-		"id" : 7,
+		"id_clase" : 7,
 		"tipo_clase" : "Magistral",
 		"profesor" : null,
 		"materia" : "Cálculo III",
@@ -106,7 +106,7 @@
 		"aula" : null
 	},
 	{
-		"id" : 8,
+		"id_clase" : 8,
 		"tipo_clase" : "Laboratorio",
 		"profesor" : {
 			"nombre_completo" : "David Castro Lopez",
@@ -124,7 +124,7 @@
 		}
 	},
 	{
-		"id" : 9,
+		"id_clase" : 9,
 		"tipo_clase" : "Clase",
 		"profesor" : {
 			"nombre_completo" : "Miguel Herrera Garcia",
@@ -142,7 +142,7 @@
 		}
 	},
 	{
-		"id" : 10,
+		"id_clase" : 10,
 		"tipo_clase" : "Clase",
 		"profesor" : {
 			"nombre_completo" : "Diego Restrepo Cardona",

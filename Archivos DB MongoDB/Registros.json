@@ -1,6 +1,6 @@
 [
 	{
-		"id" : 1,
+		"id_registro" : 1,
 		"codigo_estudiante" : 2,
 		"id_clase" : 1,
 		"fecha_registro" : {
@@ -9,7 +9,7 @@
 		"id_factura" : 4
 	},
 	{
-		"id" : 2,
+		"id_registro" : 2,
 		"codigo_estudiante" : 2,
 		"id_clase" : 10,
 		"fecha_registro" : {
@@ -18,7 +18,7 @@
 		"id_factura" : 4
 	},
 	{
-		"id" : 3,
+		"id_registro" : 3,
 		"codigo_estudiante" : 3,
 		"id_clase" : 1,
 		"fecha_registro" : {
@@ -27,7 +27,7 @@
 		"id_factura" : 2
 	},
 	{
-		"id" : 4,
+		"id_registro" : 4,
 		"codigo_estudiante" : 3,
 		"id_clase" : 4,
 		"fecha_registro" : {
@@ -36,7 +36,7 @@
 		"id_factura" : 2
 	},
 	{
-		"id" : 5,
+		"id_registro" : 5,
 		"codigo_estudiante" : 10,
 		"id_clase" : 5,
 		"fecha_registro" : {
@@ -45,7 +45,7 @@
 		"id_factura" : 1
 	},
 	{
-		"id" : 6,
+		"id_registro" : 6,
 		"codigo_estudiante" : 10,
 		"id_clase" : 1,
 		"fecha_registro" : {
@@ -54,7 +54,7 @@
 		"id_factura" : 1
 	},
 	{
-		"id" : 7,
+		"id_registro" : 7,
 		"codigo_estudiante" : 10,
 		"id_clase" : 4,
 		"fecha_registro" : {
@@ -63,7 +63,7 @@
 		"id_factura" : 1
 	},
 	{
-		"id" : 8,
+		"id_registro" : 8,
 		"codigo_estudiante" : 7,
 		"id_clase" : 10,
 		"fecha_registro" : {
@@ -72,7 +72,7 @@
 		"id_factura" : 6
 	},
 	{
-		"id" : 9,
+		"id_registro" : 9,
 		"codigo_estudiante" : 5,
 		"id_clase" : 10,
 		"fecha_registro" : {
@@ -81,7 +81,7 @@
 		"id_factura" : 3
 	},
 	{
-		"id" : 10,
+		"id_registro" : 10,
 		"codigo_estudiante" : 9,
 		"id_clase" : 10,
 		"fecha_registro" : {

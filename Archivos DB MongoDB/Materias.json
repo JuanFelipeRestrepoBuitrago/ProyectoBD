@@ -1,144 +1,124 @@
 [
 	{
-		"id" : 1,
+		"id_materia" : 1,
 		"nombre_materia" : "Cálculo I",
 		"numero_creditos" : 2,
         "prerequisitos" : null
 	},
 	{
-		"id" : 2,
+		"id_materia" : 2,
 		"nombre_materia" : "Cálculo II",
 		"numero_creditos" : 2,
-        "prerequisitos" : {
-            "pre": [
+        "prerequisitos" : [
                 "Cálculo I"
             ]
-        }
 	},
 	{
-		"id" : 3,
+		"id_materia" : 3,
 		"nombre_materia" : "Cálculo III",
 		"numero_creditos" : 3,
-        "prerequisitos" : {
-            "pre": [
+        "prerequisitos" :[
                 "Cálculo II"
             ]
-        }
 	},
 	{
-		"id" : 4,
+		"id_materia" : 4,
 		"nombre_materia" : "Fundamentos de Programación",
 		"numero_creditos" : 3,
-        "prerequisitos" : {
-            "pre": [
+        "prerequisitos" :[
                 "Lógica"
             ]
-        }
 	},
 	{
-		"id" : 5,
+		"id_materia" : 5,
 		"nombre_materia" : "Física I",
 		"numero_creditos" : 3,
         "prerequisitos" : null
 	},
 	{
-		"id" : 6,
+		"id_materia" : 6,
 		"nombre_materia" : "Física II",
 		"numero_creditos" : 4,
-        "prerequisitos" : {
-            "pre": [
+        "prerequisitos" : [
                 "Física I"
             ]
-        }
 	},
 	{
-		"id" : 7,
+		"id_materia" : 7,
 		"nombre_materia" : "Prácticas Textuales",
 		"numero_creditos" : 3,
         "prerequisitos" : null
 	},
 	{
-		"id" : 8,
+		"id_materia" : 8,
 		"nombre_materia" : "Estructura de Datos I",
 		"numero_creditos" : 5,
-        "prerequisitos" : {
-            "pre": [
+        "prerequisitos" : [
                 "Fundamentos de Programación"
             ]
-        }
 	},
 	{
-		"id" : 9,
+		"id_materia" : 9,
 		"nombre_materia" : "Estadística",
 		"numero_creditos" : 1,
         "prerequisitos" : null
 	},
 	{
-		"id" : 10,
+		"id_materia" : 10,
 		"nombre_materia" : "Ecología",
 		"numero_creditos" : 1,
         "prerequisitos" : null
 	},
 	{
-		"id" : 11,
+		"id_materia" : 11,
 		"nombre_materia" : "Lógica",
 		"numero_creditos" : 2,
         "prerequisitos" : null
 	},
 	{
-		"id" : 12,
+		"id_materia" : 12,
 		"nombre_materia" : "Estructuras Discretas",
 		"numero_creditos" : 3,
-        "prerequisitos" : {
-            "pre": [
+        "prerequisitos" : [
                 "Lógica"
             ]
-        }
 	},
 	{
-		"id" : 13,
+		"id_materia" : 13,
 		"nombre_materia" : "Economía",
 		"numero_creditos" : 2, 
         "prerequisitos" : null
 	},
 	{
-		"id" : 14,
+		"id_materia" : 14,
 		"nombre_materia" : "Contaduría I",
 		"numero_creditos" : 3,
-        "prerequisitos" : {
-            "pre": [
+        "prerequisitos" : [
                 "Economía"
             ]
-        }
 	},
 	{
-		"id" : 15,
+		"id_materia" : 15,
 		"nombre_materia" : "Procesos Contables",
 		"numero_creditos" : 4,
-        "prerequisitos" : {
-            "pre": [
+        "prerequisitos" : [
                 "Contaduría I"
             ]
-        }
 	},
 	{
-		"id" : 16,
+		"id_materia" : 16,
 		"nombre_materia" : "Algebra Lineal",
 		"numero_creditos" : 15,
-        "prerequisitos" : {
-            "pre": [
+        "prerequisitos" : [
                 "Estadística"
             ]
-        }
 	},
 	{
-		"id" : 17,
+		"id_materia" : 17,
 		"nombre_materia" : "Lenguajes Formales y Compiladores",
 		"numero_creditos" : 3,
-        "prerequisitos" : {
-            "pre": [
+        "prerequisitos" : [
                 "Estructuras Discretas"
             ]
-        }
 	}
 ]
